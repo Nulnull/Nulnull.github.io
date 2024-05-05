@@ -17,22 +17,36 @@
       font-family: 'Lucida Console', monospace;
       margin-bottom: 10px;
     }
+    #output.active {
+      animation: blink 0.5s infinite alternate; /* 设置闪烁动画 */
+    }
+
+    
     #input-container {
       position: relative;
       display: inline-block;
     }
     #input {
-      width: 1000px;
+      font-size: 35px;
+      border: none;
+      background-color: #00FF00;
+      color: black;
+      outline: none;
+      
+      font-family: 'Lucida Console', monospace;
+      transition: width 0.3s, font-size 0.3s;
+      animation: blink 1.5s infinite alternate; /* 设置闪烁动画 */
+    }
+    #input.active {
+      font-size: 55px;
+      width: 100%;
       border: none;
       background-color: #000000;
       color: #00FF00;
       outline: none;
       font-family: 'Lucida Console', monospace;
       transition: width 0.3s, font-size 0.3s;
-    }
-    #input.active {
-      width: 300px;
-      font-size: 35px;
+      animation: none; /* 设置闪烁动画 */
     }
     .candidate-list {
       position: absolute;
@@ -60,7 +74,7 @@
       border-left: 20px solid transparent;
       border-right: 00px solid transparent;
       border-bottom: 20px solid #00FF00; /* 三角形的颜色 */
-      animation: blink 0.5s infinite alternate; /* 设置闪烁动画 */
+      animation: blink 1s infinite alternate; /* 设置闪烁动画 */
       display: none;
     }
     @keyframes blink {
@@ -443,6 +457,16 @@
     //searchPointer.style.display = 'none';
 
 
+    // 获取闪烁搜索框的元素
+    const input = document.getElementById('input');
+
+    // 在需要显示闪烁提示的时候调用
+    input.style.display = 'block';
+
+    // 在不需要显示闪烁提示的时候调用
+    //searchPointer.style.display = 'none';
+    
+
     function search(keyword) {
       const searchUrl = 'https://www.baidu.com/s?wd=' + encodeURIComponent(keyword);
       window.open(searchUrl, '_blank');
@@ -458,6 +482,18 @@
     //inputBox.addEventListener('blur', function() {
       //searchPointer.style.display = 'none'; // 隐藏闪烁的三角形
     //});
+
+    function addOutput(text) {
+      const outputLine = document.createElement('div');
+      outputLine.textContent = text;
+      outputDiv.appendChild(outputLine);
+      outputDiv.scrollTop = outputDiv.scrollHeight;
+      outputDiv.classList.add('active'); // 添加激活类以触发动画
+      setTimeout(() => {
+        outputDiv.classList.remove('active'); // 移除激活类以停止动画
+      }, 180); // 设置动画时长，单位为毫秒
+    }
+
   </script>
 </body>
 </html>
