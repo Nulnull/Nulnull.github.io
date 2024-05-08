@@ -8,6 +8,7 @@
       color: #00FF00;
       font-family: 'Lucida Console', monospace;
       padding: 10px;
+      
 
     }
     #output {
@@ -35,7 +36,7 @@
       
       font-family: 'Lucida Console', monospace;
       transition: width 0.3s, font-size 0.3s;
-      animation: blink 1.5s infinite alternate; /* 设置闪烁动画 */
+
     }
     #input.active {
       font-size: 55px;
@@ -532,7 +533,7 @@
       const currentCommand = lastSpaceIndex === -1 ? inputText : inputText.substring(lastSpaceIndex + 1);
 
       // 根据当前命令显示相应的语法
-      const syntax = commandSyntax[currentCommand] || 'Invalid command';
+      const syntax = commandSyntax[currentCommand] || 'Invalid Command - TYPING';
       const syntaxDiv = document.getElementById('command-syntax');
       syntaxDiv.textContent = syntax;
   }
