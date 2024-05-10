@@ -1,364 +1,392 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Null v2.65s</title>
-		<style>
-			body {
-      background-color: #000000;
-      color: #00FF00;
-      font-family: 'Lucida Console', monospace;
-      padding: 10px;
-      
 
-    }
-    #output {
-      height: auto;
-      background-color: #000000;
-      color: #00FF00;
-      font-family: 'Lucida Console', monospace;
-      margin-bottom: 10px;
-    }
-    #output.active {
-      animation: blink 0.5s infinite alternate; /* 设置闪烁动画 */
-    }
+<head>
+    <title>Null 2.7</title>
+    <style>
+        body:before {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: .3;
+            z-index: -1;
+            content: "";
+            position: fixed;
+            background: url(https://api.paugram.com/wallpaper/) center/cover;
+        }
 
-    
-    #input-container {
-      position: relative;
-      display: inline-block;
-    }
-    #input {
-      font-size: 35px;
-      border: none;
-      background-color: #00FF00;
-      color: black;
-      outline: none;
-      
-      font-family: 'Lucida Console', monospace;
-      transition: width 0.3s, font-size 0.3s;
+        body {
+            color: black;
+            font-family: 'Lucida Console', monospace;
+            padding: 10px;
+        }
 
-    }
-    #input.active {
-      font-size: 55px;
-      width: 100%;
-      border: none;
-      background-color: #000000;
-      color: #00FF00;
-      outline: none;
-      font-family: 'Lucida Console', monospace;
-      transition: width 0.3s, font-size 0.3s;
-      animation: none; /* 设置闪烁动画 */
-    }
-    .candidate-list {
-      position: absolute;
-      background-color: #000000;
-      color: #00FF00;
-      padding: 5x;
-      box-sizing: border-box;
-      border: 1px solid #00FF00;
-      display: none;
-      max-height: 400px;
-      max-width: 500px;
-      overflow-y: auto;
-      font-family: 'Lucida Console', monospace;
-    }
-    .candidate-item {
-      cursor: pointer;
-      padding: 4px;
-    }
-    #search-pointer {
-      position: absolute;
-      right: 5px; /* 距离搜索框右侧的距离 */
-      transform: translateY(-50%);
-      width: 0;
-      height: 0;
-      border-left: 20px solid transparent;
-      border-right: 00px solid transparent;
-      border-bottom: 20px solid #00FF00; /* 三角形的颜色 */
-      animation: blink 1s infinite alternate; /* 设置闪烁动画 */
-      display: none;
-    }
-    @keyframes blink {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-    .command-syntax {
-      color: #00FF00; /* 设置文字颜色为绿色 */
-      font-family: 'Lucida Console', monospace; /* 设置字体 */
-      padding-top: 58px; /* 设置上边距 */
-      
-    }
+        #output {
+            height: auto;
+            color: black;
+            font-family: 'Lucida Console', monospace;
+            margin-bottom: 10px;
+        }
 
-  </style>
-	</head>
-	<body>
-		<div id="output"></div>
-		<div class="input">
-			<input id="input" type="text" autofocus />
-			<div id="search-pointer"></div>
-		</div>
-
-		<div id="candidate-list" class="candidate-list"></div>
-		<div id="command-syntax" class="command-syntax">Command syntax will be displayed here</div>
+        #output.active {
+            animation: blink 0.5s infinite alternate;
+            /* 设置闪烁动画 */
+        }
 
 
-		<div id="todo-list"></div>
+        #input-container {
+            position: relative;
+            display: inline-block;
+        }
 
-		<script>
-			const outputDiv = document.getElementById('output');
-			    const inputBox = document.getElementById('input');
-			    const candidateList = document.getElementById('candidate-list');
-			    const todoList = document.getElementById('todo-list');
-			    let typingSpeed = 100; // 默认打字速度
-			    let commandHistory = [];
-			    let historyIndex = -1;
-			    const commands = [
-			      'date',
-			      'time',
-			      'clear',
-			      'matrix',
-			      'hello',
-			      'bye',
-			      'start ',
-			      'search',
-			      'help',
-			      'calc',
-			      'add',
-			      'rm',
-			      'ls',
-			      'todo',
-			      'done'// 计算器命令
-			    ];
-			    let bookmarks = [];
-			    let todos = [];
-			
-			    // 检查本地存储中是否存在收藏夹数据
-			    const storedBookmarks = localStorage.getItem('bookmarks');
-			    if (storedBookmarks) {
-			      bookmarks = JSON.parse(storedBookmarks);
-			    }
-			
-			    inputBox.addEventListener('keydown', function (event) {
-			      if (event.key === 'Enter') {
-			        const inputText = inputBox.value;
-			        inputBox.value = '';
-			
-			        processCommand(inputText);
-			        commandHistory.push(inputText);
-			        historyIndex = commandHistory.length;
-			      } else if (event.key === 'ArrowUp') {
-			        event.preventDefault();
-			        if (historyIndex > 0) {
-			          historyIndex--;
-			          inputBox.value = commandHistory[historyIndex];
-			        }
-			      } else if (event.key === 'ArrowDown') {
-			        event.preventDefault();
-			        if (historyIndex < commandHistory.length - 1) {
-			          historyIndex++;
-			          inputBox.value = commandHistory[historyIndex];
-			        } else {
-			          historyIndex = commandHistory.length;
-			          inputBox.value = '';
-			        }
-			      } else if (event.key === 'Tab') {
-			        event.preventDefault();
-			        autoCompleteCommand();
-			      }
-			    });
-			
-			    inputBox.addEventListener('input', function(event) {
-			      const inputText = inputBox.value.trim();
-			      const lastSpaceIndex = inputText.lastIndexOf(' ');
-			      const currentCommand = lastSpaceIndex === -1 ? inputText : inputText.substring(lastSpaceIndex + 1);
-			      if (currentCommand.length > 0) {
-			        const filteredCommands = commands.filter(command => command.startsWith(currentCommand));
-			        if (filteredCommands.length > 0) {
-			          showCandidateList(filteredCommands);
-			        } else {
-			          hideCandidateList();
-			        }
-			      } else {
-			        hideCandidateList();
-			      }
-			    });
-			
-			    inputBox.addEventListener('focus', function() {
-			      inputBox.classList.add('active');
-			    });
-			
-			    inputBox.addEventListener('blur', function() {
-			      inputBox.classList.remove('active');
-			    });
-			
-			    function showCandidateList(filteredCommands) {
-			      candidateList.innerHTML = '';
-			      filteredCommands.forEach(command => {
-			        const item = document.createElement('div');
-			        item.classList.add('candidate-item');
-			        item.textContent = command;
-			        item.addEventListener('click', function() {
-			          replaceCommand(command);
-			        });
-			        candidateList.appendChild(item);
-			      });
-			
-			      candidateList.style.display = 'block';
-			    }
-			
-			    function hideCandidateList() {
-			      candidateList.style.display = 'none';
-			    }
-			
-			    function replaceCommand(command) {
-			      const inputText = inputBox.value.trim();
-			      const lastSpaceIndex = inputText.lastIndexOf(' ');
-			      const newText = lastSpaceIndex === -1 ? command : inputText.substring(0, lastSpaceIndex + 1) + command;
-			      inputBox.value = newText;
-			      hideCandidateList();
-			    }
-			
-			    function autoCompleteCommand() {
-			      const inputText = inputBox.value.trim();
-			      const lastSpaceIndex = inputText.lastIndexOf(' ');
-			      const currentCommand = lastSpaceIndex === -1 ? inputText : inputText.substring(lastSpaceIndex + 1);
-			      if (currentCommand.length > 0) {
-			        const filteredCommands = commands.filter(command => command.startsWith(currentCommand));
-			        if (filteredCommands.length === 1) {
-			          replaceCommand(filteredCommands[0]);
-			        }
-			      }
-			    }
-			
-			    function processCommand(command) {
-			      const outputText = '> ' + command;
-			      addOutput(outputText);
-			
-			      if (command === 'date') {
-			        const date = new Date();
-			        const dateString = date.toLocaleDateString();
-			        typeWriterEffect(dateString);
-			      } else if (command === 'time') {
-			        const date = new Date();
-			        const timeString = date.toLocaleTimeString();
-			        typeWriterEffect(timeString);
-			      } else if (command === 'clear') {
-			        clearOutput();
-			      } else if (command === 'matrix') {
-			        startMatrix();
-			      } else if (command === 'hello') {
-			        typeWriterEffect('Hello, world!');
-			      } else if (command === 'bye') {
-			        typeWriterEffect('Goodbye!');
-			      } else if (command.startsWith('start ')) {
-			        const url = command.substring(6).trim();
-			        openURL(url);
-			      } else if (command === 'search') {
-			        typeWriterEffect('搜索功能尚未实现');
-			      } else if (command === 'help') {
-			        showHelp();
-			      } else if (command === 'calc') {
-			        typeWriterEffect('计算器功能尚未实现');
-			      } else if (command.startsWith('bookmark ')) {
-			        const url = command.substring(9).trim();
-			        addBookmark(url);
-			      } else if (command === 'bookmarks') {
-			        listBookmarks();
-			      } else if (command === 'todos') {
-			        listTodos();
-			      } else if (command.startsWith('todo ')) {
-			        const todoText = command.substring(5).trim();
-			        addTodoItem(todoText);
-			      } else if (command.startsWith('done ')) {
-			        const index = parseInt(command.substring(5));
-			        completeTodoItem(index);
-			      } else if (command === 'ls') {
-			          listBookmarks();
-			      } else if (command.startsWith('add ')) {
-			          const url = command.substring(4);
-			          addBookmark(url);
-			      } else if (command.startsWith('rm ')) {
-			          const index = parseInt(command.substring(3));
-			          removeBookmark(index);
-			      } else if (command.startsWith('go ')) {
-			        const index = parseInt(command.substring(3));
-			        goToBookmark(index);
-			      } else if (command.startsWith('search ')) {
-			          const keyword = command.substring(7);
-			          search(keyword);
-			      } else if (command.startsWith('start ')) {
-			          const url = command.substring(6).trim();
-			          openUrlInNewTab(url);
-			      }else {
-			        typeWriterEffect("无效的命令。输入 'help' 查看可用命令列表。");
-			      }
-			    }
-			
-			    function addOutput(text) {
-			      const outputLine = document.createElement('div');
-			      outputLine.textContent = text;
-			      outputDiv.appendChild(outputLine);
-			      outputDiv.scrollTop = outputDiv.scrollHeight;
-			    }
-			
-			    function clearOutput() {
-			      outputDiv.innerHTML = '';
-			    }
-			
-			    function typeWriterEffect(text) {
-			      let index = 0;
-			      const speed = typingSpeed;
-			      const outputLine = document.createElement('div');
-			      outputDiv.appendChild(outputLine);
-			
-			      function typeNextCharacter() {
-			        if (index < text.length) {
-			          const char = text.charAt(index);
-			          outputLine.textContent += char;
-			          index++;
-			          setTimeout(typeNextCharacter, speed);
-			        }
-			      }
-			
-			      typeNextCharacter();
-			      outputDiv.scrollTop = outputDiv.scrollHeight;
-			    }
-			
-			    function startMatrix() {
-			      clearOutput();
-			      const matrixLine = document.createElement('div');
-			      matrixLine.style.fontFamily = 'Lucida Console, monospace';
-			      matrixLine.style.fontSize = '12px';
-			      matrixLine.style.whiteSpace = 'pre';
-			      outputDiv.appendChild(matrixLine);
-			
-			      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-			      const speed = 50;
-			      let index = 0;
-			
-			      function typeNextCharacter() {
-			        if (index < characters.length) {
-			          const char = characters.charAt(index);
-			          matrixLine.textContent += char;
-			          index++;
-			          setTimeout(typeNextCharacter, speed);
-			        }
-			      }
-			
-			      typeNextCharacter();
-			      outputDiv.scrollTop = outputDiv.scrollHeight;
-			    }
-			
-			    function openURL(url) {
-			      window.open(url, '_blank');
-			    }
-			
-			    function showHelp() {
-			      const helpText = `
+        #input {
+            font-size: 35px;
+            border: none;
+            color: black;
+            outline: none;
+
+            font-family: 'Lucida Console', monospace;
+            transition: width 0.3s, font-size 0.3s;
+
+        }
+
+        #input.active {
+            font-size: 55px;
+            border: none;
+
+            outline: none;
+            font-family: 'Lucida Console', monospace;
+            transition: width 0.3s, font-size 0.3s;
+        }
+
+        .candidate-list {
+            position: absolute;
+            color: black;
+            padding: 5x;
+            box-sizing: border-box;
+
+            border: 1px solid #000000;
+            display: none;
+            max-height: 400px;
+            max-width: 500px;
+            overflow-y: auto;
+            font-family: 'Lucida Console', monospace;
+        }
+
+        .candidate-item {
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        #search-pointer {
+            position: absolute;
+            left: 17px;
+            /* 距离搜索框右侧的距离 */
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 00px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 20px solid #000000;
+            /* 三角形的颜色 */
+            animation: blink 1s infinite alternate;
+            /* 设置闪烁动画 */
+            display: none;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .command-syntax {
+            color: black;
+            /* 设置文字颜色为绿色 */
+            font-family: 'Lucida Console', monospace;
+            /* 设置字体 */
+            padding-top: 58px;
+            /* 设置上边距 */
+            display: flex;
+            /* 将容器设置为弹性容器 */
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="output">
+        <p>LTS v2.7s Nulnull.github.io Nulnull</p>
+    </div>
+    <div class="input">
+        <input id="input" type="text" autofocus />
+        <div id="search-pointer"></div>
+    </div>
+
+    <div id="candidate-list" class="candidate-list"></div>
+    <div id="command-syntax" class="command-syntax">Command syntax will be displayed here</div>
+    <div id="suggestions"></div>
+
+
+    <div id="todo-list"></div>
+
+    <script>
+        const outputDiv = document.getElementById('output');
+        const inputBox = document.getElementById('input');
+        const candidateList = document.getElementById('candidate-list');
+        const todoList = document.getElementById('todo-list');
+        let typingSpeed = 100; // 默认打字速度
+        let commandHistory = [];
+        let historyIndex = -1;
+        const commands = [
+            'date',
+            'time',
+            'clear',
+            'matrix',
+            'hello',
+            'bye',
+            'start ',
+            'search',
+            'help',
+            'calc',
+            'add',
+            'rm',
+            'ls',
+            'todo',
+            'done' // 计算器命令
+
+        ];
+        let bookmarks = [];
+        let todos = [];
+
+        // 检查本地存储中是否存在收藏夹数据
+        const storedBookmarks = localStorage.getItem('bookmarks');
+        if (storedBookmarks) {
+            bookmarks = JSON.parse(storedBookmarks);
+        }
+
+        inputBox.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const inputText = inputBox.value;
+                inputBox.value = '';
+
+                processCommand(inputText);
+                commandHistory.push(inputText);
+                historyIndex = commandHistory.length;
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    inputBox.value = commandHistory[historyIndex];
+                }
+            } else if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    inputBox.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = commandHistory.length;
+                    inputBox.value = '';
+                }
+            } else if (event.key === 'Tab') {
+                event.preventDefault();
+                autoCompleteCommand();
+            }
+        });
+
+        inputBox.addEventListener('input', function(event) {
+            const inputText = inputBox.value.trim();
+            const lastSpaceIndex = inputText.lastIndexOf(' ');
+            const currentCommand = lastSpaceIndex === -1 ? inputText : inputText.substring(lastSpaceIndex + 1);
+            if (currentCommand.length > 0) {
+                const filteredCommands = commands.filter(command => command.startsWith(currentCommand));
+                if (filteredCommands.length > 0) {
+                    showCandidateList(filteredCommands);
+                } else {
+                    hideCandidateList();
+                }
+            } else {
+                hideCandidateList();
+            }
+        });
+
+        inputBox.addEventListener('focus', function() {
+            inputBox.classList.add('active');
+        });
+
+        inputBox.addEventListener('blur', function() {
+            inputBox.classList.remove('active');
+        });
+
+        function showCandidateList(filteredCommands) {
+            candidateList.innerHTML = '';
+            filteredCommands.forEach(command => {
+                const item = document.createElement('div');
+                item.classList.add('candidate-item');
+                item.textContent = command;
+                item.addEventListener('click', function() {
+                    replaceCommand(command);
+                });
+                candidateList.appendChild(item);
+            });
+
+            candidateList.style.display = 'block';
+        }
+
+        function hideCandidateList() {
+            candidateList.style.display = 'none';
+        }
+
+        function replaceCommand(command) {
+            const inputText = inputBox.value.trim();
+            const lastSpaceIndex = inputText.lastIndexOf(' ');
+            const newText = lastSpaceIndex === -1 ? command : inputText.substring(0, lastSpaceIndex + 1) + command;
+            inputBox.value = newText;
+            hideCandidateList();
+        }
+
+        function autoCompleteCommand() {
+            const inputText = inputBox.value.trim();
+            const lastSpaceIndex = inputText.lastIndexOf(' ');
+            const currentCommand = lastSpaceIndex === -1 ? inputText : inputText.substring(lastSpaceIndex + 1);
+            if (currentCommand.length > 0) {
+                const filteredCommands = commands.filter(command => command.startsWith(currentCommand));
+                if (filteredCommands.length === 1) {
+                    replaceCommand(filteredCommands[0]);
+                }
+            }
+        }
+
+        function processCommand(command) {
+            const outputText = '[input] $ ' + command;
+            addOutput(outputText);
+
+            if (command === 'date') {
+                const date = new Date();
+                const dateString = date.toLocaleDateString();
+                typeWriterEffect(dateString);
+            } else if (command === 'time') {
+                const date = new Date();
+                const timeString = date.toLocaleTimeString();
+                typeWriterEffect(timeString);
+            } else if (command === 'clear') {
+                clearOutput();
+            } else if (command === 'matrix') {
+                startMatrix();
+            } else if (command === 'hello') {
+                typeWriterEffect('Hello, world!');
+            } else if (command === 'bye') {
+                typeWriterEffect('Goodbye!');
+            } else if (command.startsWith('start ')) {
+                const url = command.substring(6).trim();
+                openURL(url);
+            } else if (command === 'search') {
+                typeWriterEffect('搜索功能尚未实现');
+            } else if (command === 'help') {
+                showHelp();
+            } else if (command === 'calc') {
+                typeWriterEffect('计算器功能尚未实现');
+            } else if (command.startsWith('bookmark ')) {
+                const url = command.substring(9).trim();
+                addBookmark(url);
+            } else if (command === 'bookmarks') {
+                listBookmarks();
+            } else if (command === 'todos') {
+                listTodos();
+            } else if (command.startsWith('todo ')) {
+                const todoText = command.substring(5).trim();
+                addTodoItem(todoText);
+            } else if (command.startsWith('done ')) {
+                const index = parseInt(command.substring(5));
+                completeTodoItem(index);
+            } else if (command === 'ls') {
+                listBookmarks();
+            } else if (command.startsWith('add ')) {
+                const url = command.substring(4);
+                addBookmark(url);
+            } else if (command.startsWith('rm ')) {
+                const index = parseInt(command.substring(3));
+                removeBookmark(index);
+            } else if (command.startsWith('go ')) {
+                const index = parseInt(command.substring(3));
+                goToBookmark(index);
+            } else if (command.startsWith('search ')) {
+                const keyword = command.substring(7);
+                search(keyword);
+            } else if (command.startsWith('start ')) {
+                const url = command.substring(6).trim();
+                openUrlInNewTab(url);
+            } else {
+                typeWriterEffect("无效的命令。输入 'help' 查看可用命令列表。");
+            }
+        }
+
+        function addOutput(text) {
+            const outputLine = document.createElement('div');
+            outputLine.textContent = text;
+            outputDiv.appendChild(outputLine);
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        }
+
+        function clearOutput() {
+            outputDiv.innerHTML = '';
+        }
+
+        function typeWriterEffect(text) {
+            let index = 0;
+            const speed = typingSpeed;
+            const outputLine = document.createElement('div');
+            outputDiv.appendChild(outputLine);
+
+            function typeNextCharacter() {
+                if (index < text.length) {
+                    const char = text.charAt(index);
+                    outputLine.textContent += char;
+                    index++;
+                    setTimeout(typeNextCharacter, speed);
+                }
+            }
+
+            typeNextCharacter();
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        }
+
+        function startMatrix() {
+            clearOutput();
+            const matrixLine = document.createElement('div');
+            matrixLine.style.fontFamily = 'Lucida Console, monospace';
+            matrixLine.style.fontSize = '12px';
+            matrixLine.style.whiteSpace = 'pre';
+            outputDiv.appendChild(matrixLine);
+
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            const speed = 50;
+            let index = 0;
+
+            function typeNextCharacter() {
+                if (index < characters.length) {
+                    const char = characters.charAt(index);
+                    matrixLine.textContent += char;
+                    index++;
+                    setTimeout(typeNextCharacter, speed);
+                }
+            }
+
+            typeNextCharacter();
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        }
+
+        function openURL(url) {
+            window.open(url, '_blank');
+        }
+
+        function showHelp() {
+            const helpText = `
 			        可用命令列表：
 			        date - 显示当前日期
 			        time - 显示当前时间
@@ -376,185 +404,186 @@
 			        todos - 显示待办事项列表
 			        done <index> - 完成指定的待办事项
 			      `;
-			      typeWriterEffect(helpText);
-			    }
-			
-			    function addBookmark(url) {
-			      bookmarks.push(url);
-			      localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-			      typeWriterEffect(`已添加书签: ${url}`);
-			    }
-			
-			    function listBookmarks() {
-			      typeWriterEffect('书签列表:');
-			      bookmarks.forEach((bookmark, index) => {
-			        typeWriterEffect(`${index + 1}. ${bookmark}`);
-			      });
-			    }
-			
-			    function addTodoItem(text) {
-			      todos.push({ text, completed: false });
-			      typeWriterEffect(`已添加待办事项: ${text}`);
-			    }
-			
-			    function listTodos() {
-			      typeWriterEffect('待办事项列表:');
-			      todos.forEach((todo, index) => {
-			        const status = todo.completed ? '[X]' : '[ ]';
-			        typeWriterEffect(`${index + 1}. ${status} ${todo.text}`);
-			      });
-			    }
-			
-			    function completeTodoItem(index) {
-			      if (index >= 1 && index <= todos.length) {
-			        const todo = todos[index - 1];
-			        if (!todo.completed) {
-			          todo.completed = true;
-			          typeWriterEffect(`已完成待办事项: ${todo.text}`);
-			        } else {
-			          typeWriterEffect(`该待办事项已完成: ${todo.text}`);
-			        }
-			      } else {
-			        typeWriterEffect('无效的待办事项索引');
-			      }
-			    }
-			
-			
-			    function goToBookmark(index) {
-			      if (index >= 0 && index < bookmarks.length) {
-			        const url = bookmarks[index];
-			        window.open('http://' + url, '_blank');
-			        typeWriterEffect('正在打开网址：' + url);
-			      } else {
-			        typeWriterEffect('无效的索引：' + index);
-			      }
-			    }
-			
-			    function listBookmarks() {
-			      if (bookmarks.length === 0) {
-			        typeWriterEffect('收藏夹为空');
-			      } else {
-			        typeWriterEffect('收藏夹中的网址：');
-			        for (let i = 0; i < bookmarks.length; i++) {
-			          const bookmark = bookmarks[i];
-			          typeWriterEffect(i + ': ' + bookmark);
-			        }
-			      }
-			    }
-			
-			    function addBookmark(url) {
-			      bookmarks.push(url);
-			      saveBookmarksToLocalStorage(); // 将收藏夹数据保存到本地存储
-			      typeWriterEffect('已添加网址到收藏夹：' + url);
-			    }
-			
-			    function removeBookmark(index) {
-			      if (index >= 0 && index < bookmarks.length) {
-			        const removedUrl = bookmarks.splice(index, 1);
-			        saveBookmarksToLocalStorage(); // 将收藏夹数据保存到本地存储
-			        typeWriterEffect('已从收藏夹中移除网址：' + removedUrl);
-			      } else {
-			        typeWriterEffect('无效的索引：' + index);
-			      }
-			    }
-			        // 获取闪烁三角形的元素
-			    const searchPointer = document.getElementById('search-pointer');
-			
-			    // 在需要显示闪烁提示的时候调用
-			    searchPointer.style.display = 'block';
-			
-			    // 在不需要显示闪烁提示的时候调用
-			    //searchPointer.style.display = 'none';
-			
-			
-			    // 获取闪烁搜索框的元素
-			    const input = document.getElementById('input');
-			
-			    // 在需要显示闪烁提示的时候调用
-			    input.style.display = 'block';
-			
-			    // 在不需要显示闪烁提示的时候调用
-			    //searchPointer.style.display = 'none';
-			    
-			
-			    function search(keyword) {
-			      const searchUrl = 'https://www.baidu.com/s?wd=' + encodeURIComponent(keyword);
-			      window.open(searchUrl, '_blank');
-			      typeWriterEffect('正在搜索：' + keyword);
-			    }
-			
-			    const inputbox = document.getElementById('input');
-			
-			    inputBox.addEventListener('focus', function() {
-			      searchPointer.style.display = 'block'; // 显示闪烁的三角形
-			    });
-			
-			    //inputBox.addEventListener('blur', function() {
-			      //searchPointer.style.display = 'none'; // 隐藏闪烁的三角形
-			    //});
-			
-			    function addOutput(text) {
-			      const outputLine = document.createElement('div');
-			      outputLine.textContent = text;
-			      outputDiv.appendChild(outputLine);
-			      outputDiv.scrollTop = outputDiv.scrollHeight;
-			      outputDiv.classList.add('active'); // 添加激活类以触发动画
-			      setTimeout(() => {
-			        outputDiv.classList.remove('active'); // 移除激活类以停止动画
-			      }, 180); // 设置动画时长，单位为毫秒
-			    }
-  // 定义命令及其语法的对象
-  const commandSyntax = {
-      'date': '',
-      'time': '',
-      'clear': '',
-      'matrix': '',
-      'hello': '',
-      'bye': '',
-      'start': '<url>',
-      'search': '',
-      'help': '',
-      'calc': '',
-      'bookmark': '<url>',
-      'bookmarks': '',
-      'todo': '<text>',
-      'done': '<index>',
-      'ls': '',
-      'add': '<url>',
-      'rm': '<index>',
-      'go': '<index>'
-      // 添加更多命令及其语法
-  };
+            typeWriterEffect(helpText);
+        }
 
-  // 显示命令的语法提示
-  function showCommandSyntax() {
-      const inputText = inputBox.value.trim();
-      const lastSpaceIndex = inputText.lastIndexOf(' ');
-      const currentCommand = lastSpaceIndex === -1 ? inputText : inputText.substring(lastSpaceIndex + 1);
+        function addBookmark(url) {
+            bookmarks.push(url);
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+            typeWriterEffect(`已添加书签: ${url}`);
+        }
 
-      // 根据当前命令显示相应的语法
-      const syntax = commandSyntax[currentCommand] || 'Invalid Command - TYPING';
-      const syntaxDiv = document.getElementById('command-syntax');
-      syntaxDiv.textContent = syntax;
-  }
+        function listBookmarks() {
+            typeWriterEffect('书签列表:');
+            bookmarks.forEach((bookmark, index) => {
+                typeWriterEffect(`${index + 1}. ${bookmark}`);
+            });
+        }
 
-  // 在输入框获得焦点时显示命令语法提示
-  inputBox.addEventListener('focus', showCommandSyntax);
+        function addTodoItem(text) {
+            todos.push({
+                text,
+                completed: false
+            });
+            typeWriterEffect(`已添加待办事项: ${text}`);
+        }
 
-  // 在输入框输入内容变化时显示命令语法提示
-  inputBox.addEventListener('input', showCommandSyntax);
+        function listTodos() {
+            typeWriterEffect('待办事项列表:');
+            todos.forEach((todo, index) => {
+                const status = todo.completed ? '[X]' : '[ ]';
+                typeWriterEffect(`${index + 1}. ${status} ${todo.text}`);
+            });
+        }
 
-  // 在使用 Tab 键自动补全命令时显示命令语法提示
-  inputBox.addEventListener('keydown', function(event) {
-      if (event.key === 'Tab') {
-          event.preventDefault();
-          autoCompleteCommand();
-          showCommandSyntax();
-      }
-  });
+        function completeTodoItem(index) {
+            if (index >= 1 && index <= todos.length) {
+                const todo = todos[index - 1];
+                if (!todo.completed) {
+                    todo.completed = true;
+                    typeWriterEffect(`已完成待办事项: ${todo.text}`);
+                } else {
+                    typeWriterEffect(`该待办事项已完成: ${todo.text}`);
+                }
+            } else {
+                typeWriterEffect('无效的待办事项索引');
+            }
+        }
 
 
+        function goToBookmark(index) {
+            if (index >= 0 && index < bookmarks.length) {
+                const url = bookmarks[index];
+                window.open('http://' + url, '_blank');
+                typeWriterEffect('正在打开网址：' + url);
+            } else {
+                typeWriterEffect('无效的索引：' + index);
+            }
+        }
 
-		</script>
-	</body>
+        function listBookmarks() {
+            if (bookmarks.length === 0) {
+                typeWriterEffect('收藏夹为空');
+            } else {
+                typeWriterEffect('收藏夹中的网址：');
+                for (let i = 0; i < bookmarks.length; i++) {
+                    const bookmark = bookmarks[i];
+                    typeWriterEffect(i + ': ' + bookmark);
+                }
+            }
+        }
+
+        function addBookmark(url) {
+            bookmarks.push(url);
+            saveBookmarksToLocalStorage(); // 将收藏夹数据保存到本地存储
+            typeWriterEffect('已添加网址到收藏夹：' + url);
+        }
+
+        function removeBookmark(index) {
+            if (index >= 0 && index < bookmarks.length) {
+                const removedUrl = bookmarks.splice(index, 1);
+                saveBookmarksToLocalStorage(); // 将收藏夹数据保存到本地存储
+                typeWriterEffect('已从收藏夹中移除网址：' + removedUrl);
+            } else {
+                typeWriterEffect('无效的索引：' + index);
+            }
+        }
+        // 获取闪烁三角形的元素
+        const searchPointer = document.getElementById('search-pointer');
+
+        // 在需要显示闪烁提示的时候调用
+        searchPointer.style.display = 'block';
+
+        // 在不需要显示闪烁提示的时候调用
+        //searchPointer.style.display = 'none';
+
+
+        // 获取闪烁搜索框的元素
+        const input = document.getElementById('input');
+
+        // 在需要显示闪烁提示的时候调用
+        input.style.display = 'block';
+
+        // 在不需要显示闪烁提示的时候调用
+        //searchPointer.style.display = 'none';
+
+
+        function search(keyword) {
+            const searchUrl = 'https://www.baidu.com/s?wd=' + encodeURIComponent(keyword);
+            window.open(searchUrl, '_blank');
+            typeWriterEffect('正在搜索：' + keyword);
+        }
+
+        const inputbox = document.getElementById('input');
+
+        inputBox.addEventListener('focus', function() {
+            searchPointer.style.display = 'none'; // 显示闪烁的三角形
+        });
+
+        inputBox.addEventListener('blur', function() {
+            searchPointer.style.display = 'block'; // 隐藏闪烁的三角形
+        });
+
+        function addOutput(text) {
+            const outputLine = document.createElement('div');
+            outputLine.textContent = text;
+            outputDiv.appendChild(outputLine);
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+            outputDiv.classList.add('active'); // 添加激活类以触发动画
+            setTimeout(() => {
+                outputDiv.classList.remove('active'); // 移除激活类以停止动画
+            }, 180); // 设置动画时长，单位为毫秒
+        }
+        // 定义命令及其语法的对象
+        const commandSyntax = {
+            'date': '',
+            'time': '',
+            'clear': '',
+            'matrix': '',
+            'hello': '',
+            'bye': '',
+            'start': '<url>',
+            'search': '',
+            'help': '',
+            'calc': '',
+            'bookmark': '<url>',
+            'bookmarks': '',
+            'todo': '<text>',
+            'done': '<index>',
+            'ls': '',
+            'add': '<url>',
+            'rm': '<index>',
+            'go': '<index>'
+            // 添加更多命令及其语法
+        };
+
+        // 显示命令的语法提示
+        function showCommandSyntax() {
+            const inputText = inputBox.value.trim();
+            const lastSpaceIndex = inputText.lastIndexOf(' ');
+            const currentCommand = lastSpaceIndex === -1 ? inputText : inputText.substring(lastSpaceIndex + 1);
+
+            // 根据当前命令显示相应的语法
+            const syntax = commandSyntax[currentCommand] || 'Invalid Command - TYPING';
+            const syntaxDiv = document.getElementById('command-syntax');
+            syntaxDiv.textContent = syntax;
+        }
+
+        // 在输入框获得焦点时显示命令语法提示
+        inputBox.addEventListener('focus', showCommandSyntax);
+
+        // 在输入框输入内容变化时显示命令语法提示
+        inputBox.addEventListener('input', showCommandSyntax);
+
+        // 在使用 Tab 键自动补全命令时显示命令语法提示
+        inputBox.addEventListener('keydown', function(event) {
+            if (event.key === 'Tab') {
+                event.preventDefault();
+                autoCompleteCommand();
+                showCommandSyntax();
+            }
+        });
+    </script>
+</body>
+
 </html>
