@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Null 2.7</title>
+    <title>Null 2.7s</title>
     <style>
         body:before {
             top: 0;
@@ -13,7 +13,8 @@
             z-index: -1;
             content: "";
             position: fixed;
-            background: url(https://api.paugram.com/wallpaper/) center/cover;
+
+            opacity: 0.5;
         }
 
         body {
@@ -83,7 +84,7 @@
             position: absolute;
             left: 17px;
             /* 距离搜索框右侧的距离 */
-            transform: translateY(-50%);
+            transform: translateY(-10px);
             width: 0;
             height: 0;
             border-left: 00px solid transparent;
@@ -144,25 +145,32 @@
         let commandHistory = [];
         let historyIndex = -1;
         const commands = [
-            'date',
-            'time',
-            'clear',
-            'matrix',
-            'hello',
-            'bye',
+            'date ',
+            'time ',
+            'clear ',
+            'matrix ',
+            'hello ',
+            'bye ',
             'start ',
-            'search',
-            'help',
-            'calc',
-            'add',
-            'rm',
-            'ls',
-            'todo',
-            'done' // 计算器命令
+            'search ',
+            'help ',
+            'calc ',
+            'add ',
+            'rm ',
+            'ls ',
+            'todo ',
+            'background ',
+            'done ' // 计算器命令
 
         ];
         let bookmarks = [];
         let todos = [];
+        // 监听键盘按下事件
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                inputBox.focus(); // 聚焦到搜索框
+            }
+        });
 
         // 检查本地存储中是否存在收藏夹数据
         const storedBookmarks = localStorage.getItem('bookmarks');
@@ -263,19 +271,31 @@
         }
 
         function processCommand(command) {
-            const outputText = '[input] $ ' + command;
+            const outputText = '[local] $ ' + command;
             addOutput(outputText);
 
-            if (command === 'date') {
+            if (command.startsWith('background ')) {
+                let url = 'https://api.paugram.com/wallpaper/';
+                const inputUrl = command.substring(11).trim();
+                if (inputUrl) {
+                    url = inputUrl;
+                    localStorage.setItem('backgroundURL', url); // 将地址存储到本地
+                }
+                document.body.style.backgroundImage = `url('${url}')`;
+                addOutput('[local] AC');
+            } else if (command === 'date') {
                 const date = new Date();
                 const dateString = date.toLocaleDateString();
                 typeWriterEffect(dateString);
+                addOutput('[local] AC');
             } else if (command === 'time') {
                 const date = new Date();
                 const timeString = date.toLocaleTimeString();
                 typeWriterEffect(timeString);
+                addOutput('[local] AC');
             } else if (command === 'clear') {
                 clearOutput();
+                addOutput('[local] AC');
             } else if (command === 'matrix') {
                 startMatrix();
             } else if (command === 'hello') {
@@ -285,46 +305,69 @@
             } else if (command.startsWith('start ')) {
                 const url = command.substring(6).trim();
                 openURL(url);
+                addOutput('[local] AC');
             } else if (command === 'search') {
-                typeWriterEffect('搜索功能尚未实现');
+                addOutput('[local] Jump');
             } else if (command === 'help') {
                 showHelp();
             } else if (command === 'calc') {
                 typeWriterEffect('计算器功能尚未实现');
+                addOutput('[local] error');
             } else if (command.startsWith('bookmark ')) {
                 const url = command.substring(9).trim();
                 addBookmark(url);
+                addOutput('[local] ADD');
             } else if (command === 'bookmarks') {
                 listBookmarks();
+                addOutput('[local] Opened');
             } else if (command === 'todos') {
                 listTodos();
+                addOutput('[local] Opened');
             } else if (command.startsWith('todo ')) {
                 const todoText = command.substring(5).trim();
                 addTodoItem(todoText);
+                addOutput('[local] ADD');
             } else if (command.startsWith('done ')) {
                 const index = parseInt(command.substring(5));
                 completeTodoItem(index);
+                addOutput('[local] AC');
             } else if (command === 'ls') {
                 listBookmarks();
+                addOutput('[local] Opened');
             } else if (command.startsWith('add ')) {
                 const url = command.substring(4);
                 addBookmark(url);
+                addOutput('[local] ADD');
             } else if (command.startsWith('rm ')) {
                 const index = parseInt(command.substring(3));
                 removeBookmark(index);
+                addOutput('[local] Done');
             } else if (command.startsWith('go ')) {
                 const index = parseInt(command.substring(3));
                 goToBookmark(index);
+                addOutput('[local] Jump');
             } else if (command.startsWith('search ')) {
                 const keyword = command.substring(7);
                 search(keyword);
+                addOutput('[local] Jump');
             } else if (command.startsWith('start ')) {
                 const url = command.substring(6).trim();
                 openUrlInNewTab(url);
+                addOutput('[local] Jump');
             } else {
                 typeWriterEffect("无效的命令。输入 'help' 查看可用命令列表。");
+                addOutput('[local] error');
             }
         }
+
+        // 页面加载时，检查本地存储中是否存在背景图片地址，并设置背景
+        document.addEventListener('DOMContentLoaded', function() {
+            const backgroundURL = localStorage.getItem('backgroundURL');
+            if (backgroundURL) {
+                document.body.style.backgroundImage = `url('${backgroundURL}')`;
+            }
+        });
+
 
         function addOutput(text) {
             const outputLine = document.createElement('div');
@@ -536,24 +579,25 @@
         }
         // 定义命令及其语法的对象
         const commandSyntax = {
-            'date': '',
-            'time': '',
-            'clear': '',
-            'matrix': '',
-            'hello': '',
-            'bye': '',
-            'start': '<url>',
-            'search': '',
-            'help': '',
-            'calc': '',
-            'bookmark': '<url>',
-            'bookmarks': '',
-            'todo': '<text>',
-            'done': '<index>',
-            'ls': '',
-            'add': '<url>',
-            'rm': '<index>',
-            'go': '<index>'
+            'date': 'date',
+            'time': 'time',
+            'clear': 'clear',
+            'matrix': 'Funny',
+            'hello': 'hello',
+            'bye': 'bye',
+            'start': '{start} <url>',
+            'search': '{search} <text>',
+            'help': 'tips',
+            'calc': 'calc',
+            'bookmark': '{bookmark} <url>',
+            'bookmarks': 'bookmarks',
+            'todo': '{todo} <text>',
+            'done': '{done} <index>',
+            'ls': 'ls',
+            'add': '{add} <url>',
+            'rm': '{rm} <index>',
+            'go': '{go} <index>',
+            'background': '{background} <url>'
             // 添加更多命令及其语法
         };
 
@@ -582,6 +626,21 @@
                 autoCompleteCommand();
                 showCommandSyntax();
             }
+        });
+
+
+        const inputBox1 = document.getElementById('input');
+
+        inputBox1.addEventListener('focus', function() {
+            const inputText = inputBox1.value.trim();
+            if (inputText.length > 0) {
+                const filteredCommands = commands.filter(command => command.startsWith(inputText));
+                showCandidateList(filteredCommands);
+            }
+        });
+
+        inputBox.addEventListener('blur', function() {
+            hideCandidateList();
         });
     </script>
 </body>
