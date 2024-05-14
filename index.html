@@ -13,7 +13,7 @@
             z-index: -1;
             content: "";
             position: fixed;
-
+            
             opacity: 0.5;
         }
 
@@ -117,6 +117,7 @@
             /* 将容器设置为弹性容器 */
 
         }
+        
     </style>
 </head>
 
@@ -165,12 +166,12 @@
         ];
         let bookmarks = [];
         let todos = [];
-        // 监听键盘按下事件
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                inputBox.focus(); // 聚焦到搜索框
-            }
-        });
+      // 监听键盘按下事件
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        inputBox.focus(); // 聚焦到搜索框
+    }
+});
 
         // 检查本地存储中是否存在收藏夹数据
         const storedBookmarks = localStorage.getItem('bookmarks');
@@ -270,103 +271,103 @@
             }
         }
 
-        function processCommand(command) {
-            const outputText = '[local] $ ' + command;
-            addOutput(outputText);
+function processCommand(command) {
+    const outputText = '[local] $ ' + command;
+    addOutput(outputText);
 
-            if (command.startsWith('background ')) {
-                let url = 'https://api.paugram.com/wallpaper/';
-                const inputUrl = command.substring(11).trim();
-                if (inputUrl) {
-                    url = inputUrl;
-                    localStorage.setItem('backgroundURL', url); // 将地址存储到本地
-                }
-                document.body.style.backgroundImage = `url('${url}')`;
-                addOutput('[local] AC');
-            } else if (command === 'date') {
-                const date = new Date();
-                const dateString = date.toLocaleDateString();
-                typeWriterEffect(dateString);
-                addOutput('[local] AC');
-            } else if (command === 'time') {
-                const date = new Date();
-                const timeString = date.toLocaleTimeString();
-                typeWriterEffect(timeString);
-                addOutput('[local] AC');
-            } else if (command === 'clear') {
-                clearOutput();
-                addOutput('[local] AC');
-            } else if (command === 'matrix') {
-                startMatrix();
-            } else if (command === 'hello') {
-                typeWriterEffect('Hello, world!');
-            } else if (command === 'bye') {
-                typeWriterEffect('Goodbye!');
-            } else if (command.startsWith('start ')) {
-                const url = command.substring(6).trim();
-                openURL(url);
-                addOutput('[local] AC');
-            } else if (command === 'search') {
-                addOutput('[local] Jump');
-            } else if (command === 'help') {
-                showHelp();
-            } else if (command === 'calc') {
-                typeWriterEffect('计算器功能尚未实现');
-                addOutput('[local] error');
-            } else if (command.startsWith('bookmark ')) {
-                const url = command.substring(9).trim();
-                addBookmark(url);
-                addOutput('[local] ADD');
-            } else if (command === 'bookmarks') {
-                listBookmarks();
-                addOutput('[local] Opened');
-            } else if (command === 'todos') {
-                listTodos();
-                addOutput('[local] Opened');
-            } else if (command.startsWith('todo ')) {
-                const todoText = command.substring(5).trim();
-                addTodoItem(todoText);
-                addOutput('[local] ADD');
-            } else if (command.startsWith('done ')) {
-                const index = parseInt(command.substring(5));
-                completeTodoItem(index);
-                addOutput('[local] AC');
-            } else if (command === 'ls') {
-                listBookmarks();
-                addOutput('[local] Opened');
-            } else if (command.startsWith('add ')) {
-                const url = command.substring(4);
-                addBookmark(url);
-                addOutput('[local] ADD');
-            } else if (command.startsWith('rm ')) {
-                const index = parseInt(command.substring(3));
-                removeBookmark(index);
-                addOutput('[local] Done');
-            } else if (command.startsWith('go ')) {
-                const index = parseInt(command.substring(3));
-                goToBookmark(index);
-                addOutput('[local] Jump');
-            } else if (command.startsWith('search ')) {
-                const keyword = command.substring(7);
-                search(keyword);
-                addOutput('[local] Jump');
-            } else if (command.startsWith('start ')) {
-                const url = command.substring(6).trim();
-                openUrlInNewTab(url);
-                addOutput('[local] Jump');
-            } else {
-                typeWriterEffect("无效的命令。输入 'help' 查看可用命令列表。");
-                addOutput('[local] error');
-            }
+    if (command.startsWith('background ')) {
+        let url = 'https://api.paugram.com/wallpaper/';
+        const inputUrl = command.substring(11).trim();
+        if (inputUrl) {
+            url = inputUrl;
+            localStorage.setItem('backgroundURL', url); // 将地址存储到本地
         }
+        document.body.style.backgroundImage = `url('${url}')`;
+        addOutput('[local] AC');
+    } else if (command === 'date') {
+        const date = new Date();
+        const dateString = date.toLocaleDateString();
+        typeWriterEffect(dateString);
+        addOutput('[local] AC');
+    } else if (command === 'time') {
+        const date = new Date();
+        const timeString = date.toLocaleTimeString();
+        typeWriterEffect(timeString);
+        addOutput('[local] AC');
+    } else if (command === 'clear') {
+        clearOutput();
+        addOutput('[local] AC');
+    } else if (command === 'matrix') {
+        startMatrix();
+    } else if (command === 'hello') {
+        typeWriterEffect('Hello, world!');
+    } else if (command === 'bye') {
+        typeWriterEffect('Goodbye!');
+    } else if (command.startsWith('start ')) {
+        const url = command.substring(6).trim();
+        openURL(url);
+        addOutput('[local] AC');
+    } else if (command === 'search') {
+        addOutput('[local] Jump');
+    } else if (command === 'help') {
+        showHelp();
+    } else if (command === 'calc') {
+        typeWriterEffect('计算器功能尚未实现');
+        addOutput('[local] error');
+    } else if (command.startsWith('bookmark ')) {
+        const url = command.substring(9).trim();
+        addBookmark(url);
+        addOutput('[local] ADD');
+    } else if (command === 'bookmarks') {
+        listBookmarks();
+        addOutput('[local] Opened');
+    } else if (command === 'todos') {
+        listTodos();
+        addOutput('[local] Opened');
+    } else if (command.startsWith('todo ')) {
+        const todoText = command.substring(5).trim();
+        addTodoItem(todoText);
+        addOutput('[local] ADD');
+    } else if (command.startsWith('done ')) {
+        const index = parseInt(command.substring(5));
+        completeTodoItem(index);
+        addOutput('[local] AC');
+    } else if (command === 'ls') {
+        listBookmarks();
+        addOutput('[local] Opened');
+    } else if (command.startsWith('add ')) {
+        const url = command.substring(4);
+        addBookmark(url);
+        addOutput('[local] ADD');
+    } else if (command.startsWith('rm ')) {
+        const index = parseInt(command.substring(3));
+        removeBookmark(index);
+        addOutput('[local] Done');
+    } else if (command.startsWith('go ')) {
+        const index = parseInt(command.substring(3));
+        goToBookmark(index);
+        addOutput('[local] Jump');
+    } else if (command.startsWith('search ')) {
+        const keyword = command.substring(7);
+        search(keyword);
+        addOutput('[local] Jump');
+    } else if (command.startsWith('start ')) {
+        const url = command.substring(6).trim();
+        openUrlInNewTab(url);
+        addOutput('[local] Jump');
+    } else {
+        typeWriterEffect("无效的命令。输入 'help' 查看可用命令列表。");
+        addOutput('[local] error');
+    }
+}
 
-        // 页面加载时，检查本地存储中是否存在背景图片地址，并设置背景
-        document.addEventListener('DOMContentLoaded', function() {
-            const backgroundURL = localStorage.getItem('backgroundURL');
-            if (backgroundURL) {
-                document.body.style.backgroundImage = `url('${backgroundURL}')`;
-            }
-        });
+// 页面加载时，检查本地存储中是否存在背景图片地址，并设置背景
+document.addEventListener('DOMContentLoaded', function() {
+    const backgroundURL = localStorage.getItem('backgroundURL');
+    if (backgroundURL) {
+        document.body.style.backgroundImage = `url('${backgroundURL}')`;
+    }
+});
 
 
         function addOutput(text) {
@@ -597,7 +598,7 @@
             'add': '{add} <url>',
             'rm': '{rm} <index>',
             'go': '{go} <index>',
-            'background': '{background} <url>'
+            'background':'{background} <url>'
             // 添加更多命令及其语法
         };
 
@@ -631,17 +632,19 @@
 
         const inputBox1 = document.getElementById('input');
 
-        inputBox1.addEventListener('focus', function() {
-            const inputText = inputBox1.value.trim();
-            if (inputText.length > 0) {
-                const filteredCommands = commands.filter(command => command.startsWith(inputText));
-                showCandidateList(filteredCommands);
-            }
-        });
+inputBox1.addEventListener('focus', function() {
+    const inputText = inputBox1.value.trim();
+    if (inputText.length > 0) {
+        const filteredCommands = commands.filter(command => command.startsWith(inputText));
+        showCandidateList(filteredCommands);
+    }
+});
 
-        inputBox.addEventListener('blur', function() {
-            hideCandidateList();
-        });
+inputBox.addEventListener('blur', function() {
+    hideCandidateList();
+});
+
+
     </script>
 </body>
 
