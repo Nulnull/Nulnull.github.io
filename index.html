@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Null 2.7.5</title>
+    <title>Null 2.7s</title>
     <style>
         body:before {
             top: 0;
@@ -21,6 +21,7 @@
             color: black;
             font-family: 'Lucida Console', monospace;
             padding: 10px;
+            
         }
 
         #output {
@@ -28,11 +29,13 @@
             color: black;
             font-family: 'Lucida Console', monospace;
             margin-bottom: 10px;
+            
         }
 
         #output.active {
             animation: blink 0.5s infinite alternate;
             /* 设置闪烁动画 */
+            color: rgba(0, 0, 0, 0.603);
         }
 
 
@@ -46,9 +49,10 @@
             border: none;
             color: black;
             outline: none;
-
+            padding-left: 13px;
             font-family: 'Lucida Console', monospace;
             transition: width 0.3s, font-size 0.3s;
+            
 
         }
 
@@ -59,6 +63,7 @@
             outline: none;
             font-family: 'Lucida Console', monospace;
             transition: width 0.3s, font-size 0.3s;
+            caret-shape: bar;
         }
 
         .candidate-list {
@@ -107,7 +112,7 @@
         }
 
         .command-syntax {
-            color: black;
+
             /* 设置文字颜色为绿色 */
             font-family: 'Lucida Console', monospace;
             /* 设置字体 */
@@ -117,7 +122,10 @@
             /* 将容器设置为弹性容器 */
 
         }
-        
+        .p{
+            font-size: 65px;
+            
+        }
     </style>
 </head>
 
@@ -347,10 +355,44 @@ function processCommand(command) {
         const index = parseInt(command.substring(3));
         goToBookmark(index);
         addOutput('[local] Jump');
+
     } else if (command.startsWith('search ')) {
-        const keyword = command.substring(7);
-        search(keyword);
-        addOutput('[local] Jump');
+        const parts = command.split(' ');
+        let searchEngine = '';
+
+        if (parts.length >= 2) {
+            switch (parts[1]) {
+                case '-b':
+                    searchEngine = 'bing';
+                    break;
+                case '-b1':
+                    searchEngine = 'baidu';
+                    break;
+                // Add more cases for other search engines if needed
+                default:
+                    typeWriterEffect('无效的搜索引擎选项');
+                    return;
+            }
+
+            const keyword = parts.slice(2).join(' ');
+            let searchUrl = '';
+
+            switch (searchEngine) {
+                case 'bing':
+                    searchUrl = 'https://www.bing.com/search?q=' + encodeURIComponent(keyword);
+                    break;
+                case 'baidu':
+                    searchUrl = 'https://www.baidu.com/s?wd=' + encodeURIComponent(keyword);
+                    break;
+                // Add cases for other search engines here
+            }
+
+            window.open(searchUrl, '_blank');
+            typeWriterEffect(`正在使用${searchEngine === 'bing' ? '必应' : '百度'}搜索：${keyword}`);
+        } else {
+            typeWriterEffect('请输入搜索引擎选项和关键词');
+        }
+
     } else if (command.startsWith('start ')) {
         const url = command.substring(6).trim();
         openUrlInNewTab(url);
@@ -632,17 +674,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const inputBox1 = document.getElementById('input');
 
-inputBox1.addEventListener('focus', function() {
-    const inputText = inputBox1.value.trim();
-    if (inputText.length > 0) {
-        const filteredCommands = commands.filter(command => command.startsWith(inputText));
-        showCandidateList(filteredCommands);
-    }
-});
+        inputBox1.addEventListener('focus', function() {
+            const inputText = inputBox1.value.trim();
+            if (inputText.length > 0) {
+                const filteredCommands = commands.filter(command => command.startsWith(inputText));
+                showCandidateList(filteredCommands);
+            }
+        });
 
-inputBox.addEventListener('blur', function() {
-    hideCandidateList();
-});
+        inputBox.addEventListener('blur', function() {
+            hideCandidateList();
+        });
 
 
     </script>
