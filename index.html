@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -29,13 +30,16 @@
             color: black;
             font-family: 'Lucida Console', monospace;
             margin-bottom: 10px;
+            font-size: 22px;
             
+
+
         }
 
         #output.active {
             animation: blink 0.5s infinite alternate;
             /* 设置闪烁动画 */
-            color: rgba(0, 0, 0, 0.603);
+            transition: width 0.3s, font-size 0.3s;
         }
 
 
@@ -47,23 +51,26 @@
         #input {
             font-size: 35px;
             border: none;
-            color: black;
+
             outline: none;
-            padding-left: 13px;
+            padding-left: 11px;
             font-family: 'Lucida Console', monospace;
             transition: width 0.3s, font-size 0.3s;
-            
+
+
 
         }
 
         #input.active {
-            font-size: 55px;
+            padding-left: 2px;
+            font-size: 65px;
             border: none;
-
             outline: none;
             font-family: 'Lucida Console', monospace;
             transition: width 0.3s, font-size 0.3s;
             caret-shape: bar;
+
+
         }
 
         .candidate-list {
@@ -71,13 +78,14 @@
             color: black;
             padding: 5x;
             box-sizing: border-box;
-
+            font-size: 22px;
             border: 1px solid #000000;
             display: none;
             max-height: 400px;
             max-width: 500px;
             overflow-y: auto;
             font-family: 'Lucida Console', monospace;
+            
         }
 
         .candidate-item {
@@ -112,20 +120,28 @@
         }
 
         .command-syntax {
-
+            font-size: 18px;
             /* 设置文字颜色为绿色 */
             font-family: 'Lucida Console', monospace;
             /* 设置字体 */
-            padding-top: 58px;
+            padding-top: 72px;
             /* 设置上边距 */
             display: flex;
             /* 将容器设置为弹性容器 */
+            border: 1px solid #000000;
+            width: 166px;
+            margin-top: 70px;
+            padding:5px
+            
+            
 
         }
         .p{
             font-size: 65px;
             
         }
+            /* 输入框未选中时的样式 */
+
     </style>
 </head>
 
@@ -686,7 +702,33 @@ document.addEventListener('DOMContentLoaded', function() {
             hideCandidateList();
         });
 
+        let lastWheelEventTime = 0;
 
+
+document.addEventListener('wheel', function(event) {
+    const currentTime = Date.now();
+    if (document.activeElement !== document.getElementById('inputBox') && (currentTime - lastWheelEventTime) >= 15000) {
+        lastWheelEventTime = currentTime;
+        fetch('https://tenapi.cn/v2/bilihot')
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 200 && data.data.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * data.data.length);
+                    const randomData = data.data[randomIndex];
+                    const outputLink = document.createElement('a');
+                    outputLink.href = randomData.url;
+                    outputLink.textContent = `[BiliHot] ${randomData.name}`;
+                    outputLink.target = '_blank';
+                    outputLink.style.color = 'black';
+                    outputLink.style.textDecoration = 'none';
+                    document.getElementById('output').innerHTML += outputLink.outerHTML + '<br>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+});
     </script>
 </body>
 
