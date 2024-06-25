@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Null 2.8s</title>
+    <title>Null 2.8.5s</title>
     <style>
         body:before {
             top: 0;
@@ -14,7 +13,7 @@
             z-index: -1;
             content: "";
             position: fixed;
-            
+
             opacity: 0.5;
         }
 
@@ -22,7 +21,7 @@
             color: black;
             font-family: 'Lucida Console', monospace;
             padding: 10px;
-            
+
         }
 
         #output {
@@ -31,7 +30,7 @@
             font-family: 'Lucida Console', monospace;
             margin-bottom: 10px;
             font-size: 22px;
-            
+
 
 
         }
@@ -85,7 +84,7 @@
             max-width: 500px;
             overflow-y: auto;
             font-family: 'Lucida Console', monospace;
-            
+
         }
 
         .candidate-item {
@@ -131,21 +130,20 @@
             border: 1px solid #000000;
             width: 166px;
             margin-top: 70px;
-            padding:5px
-            
-            
-
+            padding: 5px
         }
-        .p{
+
+        .p {
             font-size: 65px;
-            
-        }
-            /* 输入框未选中时的样式 */
 
+        }
+
+        /* 输入框未选中时的样式 */
     </style>
 </head>
 
 <body>
+
     <div id="output">
         <p>LTS v2.7s Nulnull.github.io Nulnull</p>
     </div>
@@ -166,23 +164,23 @@
         const inputBox = document.getElementById('input');
         const candidateList = document.getElementById('candidate-list');
         const todoList = document.getElementById('todo-list');
-        let typingSpeed = 100; // 默认打字速度
+        let typingSpeed = 20; // 默认打字速度
         let commandHistory = [];
         let historyIndex = -1;
         const commands = [
-            'date ',
-            'time ',
-            'clear ',
-            'matrix ',
-            'hello ',
-            'bye ',
-            'start ',
+            'date',
+            'time',
+            'clear',
+            'matrix',
+            'hello',
+            'bye',
+            'start',
             'search ',
-            'help ',
-            'calc ',
+            'help',
+            'calc',
             'add ',
             'rm ',
-            'ls ',
+            'ls',
             'todo ',
             'background ',
             'done ' // 计算器命令
@@ -190,12 +188,12 @@
         ];
         let bookmarks = [];
         let todos = [];
-      // 监听键盘按下事件
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-        inputBox.focus(); // 聚焦到搜索框
-    }
-});
+        // 监听键盘按下事件
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                inputBox.focus(); // 聚焦到搜索框
+            }
+        });
 
         // 检查本地存储中是否存在收藏夹数据
         const storedBookmarks = localStorage.getItem('bookmarks');
@@ -295,137 +293,137 @@ document.addEventListener('keydown', function(event) {
             }
         }
 
-function processCommand(command) {
-    const outputText = '[local] $ ' + command;
-    addOutput(outputText);
+        function processCommand(command) {
+            const outputText = '[local] $ ' + command;
+            addOutput(outputText);
 
-    if (command.startsWith('background ')) {
-        let url = 'https://api.paugram.com/wallpaper/';
-        const inputUrl = command.substring(11).trim();
-        if (inputUrl) {
-            url = inputUrl;
-            localStorage.setItem('backgroundURL', url); // 将地址存储到本地
-        }
-        document.body.style.backgroundImage = `url('${url}')`;
-        addOutput('[local] AC');
-    } else if (command === 'date') {
-        const date = new Date();
-        const dateString = date.toLocaleDateString();
-        typeWriterEffect(dateString);
-        addOutput('[local] AC');
-    } else if (command === 'time') {
-        const date = new Date();
-        const timeString = date.toLocaleTimeString();
-        typeWriterEffect(timeString);
-        addOutput('[local] AC');
-    } else if (command === 'clear') {
-        clearOutput();
-        addOutput('[local] AC');
-    } else if (command === 'matrix') {
-        startMatrix();
-    } else if (command === 'hello') {
-        typeWriterEffect('Hello, world!');
-    } else if (command === 'bye') {
-        typeWriterEffect('Goodbye!');
-    } else if (command.startsWith('start ')) {
-        const url = command.substring(6).trim();
-        openURL(url);
-        addOutput('[local] AC');
-    } else if (command === 'search') {
-        addOutput('[local] Jump');
-    } else if (command === 'help') {
-        showHelp();
-    } else if (command === 'calc') {
-        typeWriterEffect('计算器功能尚未实现');
-        addOutput('[local] error');
-    } else if (command.startsWith('bookmark ')) {
-        const url = command.substring(9).trim();
-        addBookmark(url);
-        addOutput('[local] ADD');
-    } else if (command === 'bookmarks') {
-        listBookmarks();
-        addOutput('[local] Opened');
-    } else if (command === 'todos') {
-        listTodos();
-        addOutput('[local] Opened');
-    } else if (command.startsWith('todo ')) {
-        const todoText = command.substring(5).trim();
-        addTodoItem(todoText);
-        addOutput('[local] ADD');
-    } else if (command.startsWith('done ')) {
-        const index = parseInt(command.substring(5));
-        completeTodoItem(index);
-        addOutput('[local] AC');
-    } else if (command === 'ls') {
-        listBookmarks();
-        addOutput('[local] Opened');
-    } else if (command.startsWith('add ')) {
-        const url = command.substring(4);
-        addBookmark(url);
-        addOutput('[local] ADD');
-    } else if (command.startsWith('rm ')) {
-        const index = parseInt(command.substring(3));
-        removeBookmark(index);
-        addOutput('[local] Done');
-    } else if (command.startsWith('go ')) {
-        const index = parseInt(command.substring(3));
-        goToBookmark(index);
-        addOutput('[local] Jump');
+            if (command.startsWith('background ')) {
+                let url = 'https://api.paugram.com/wallpaper/';
+                const inputUrl = command.substring(11).trim();
+                if (inputUrl) {
+                    url = inputUrl;
+                    localStorage.setItem('backgroundURL', url); // 将地址存储到本地
+                }
+                document.body.style.backgroundImage = `url('${url}')`;
+                addOutput('[System] AC');
+            } else if (command === 'date') {
+                const date = new Date();
+                const dateString = date.toLocaleDateString();
+                typeWriterEffect(dateString);
+                addOutput('[System] AC');
+            } else if (command === 'time') {
+                const date = new Date();
+                const timeString = date.toLocaleTimeString();
+                typeWriterEffect(timeString);
+                addOutput('[System] AC');
+            } else if (command === 'clear') {
+                clearOutput();
+                addOutput('[System] AC');
+            } else if (command === 'matrix') {
+                startMatrix();
+            } else if (command === 'hello') {
+                typeWriterEffect('Hello, world!');
+            } else if (command === 'bye') {
+                typeWriterEffect('Goodbye!');
+            } else if (command.startsWith('start ')) {
+                const url = command.substring(6).trim();
+                openURL(url);
+                addOutput('[System] AC');
+            } else if (command === 'search') {
+                addOutput('[System] Jump');
+            } else if (command === 'help') {
+                showHelp();
+            } else if (command === 'calc') {
+                typeWriterEffect('计算器功能尚未实现');
+                addOutput('[System] error');
+            } else if (command.startsWith('bookmark ')) {
+                const url = command.substring(9).trim();
+                addBookmark(url);
+                addOutput('[System] ADD');
+            } else if (command === 'bookmarks') {
+                listBookmarks();
+                addOutput('[System] Opened');
+            } else if (command === 'todos') {
+                listTodos();
+                addOutput('[System] Opened');
+            } else if (command.startsWith('todo ')) {
+                const todoText = command.substring(5).trim();
+                addTodoItem(todoText);
+                addOutput('[System] ADD');
+            } else if (command.startsWith('done ')) {
+                const index = parseInt(command.substring(5));
+                completeTodoItem(index);
+                addOutput('[System] AC');
+            } else if (command === 'ls') {
+                listBookmarks();
+                addOutput('[System] Opened');
+            } else if (command.startsWith('add ')) {
+                const url = command.substring(4);
+                addBookmark(url);
+                addOutput('[System] ADD');
+            } else if (command.startsWith('rm ')) {
+                const index = parseInt(command.substring(3));
+                removeBookmark(index);
+                addOutput('[System] Done');
+            } else if (command.startsWith('go ')) {
+                const index = parseInt(command.substring(3));
+                goToBookmark(index);
+                addOutput('[System] Jump');
 
-    } else if (command.startsWith('search ')) {
-        const parts = command.split(' ');
-        let searchEngine = '';
+            } else if (command.startsWith('search ')) {
+                const parts = command.split(' ');
+                let searchEngine = '';
 
-        if (parts.length >= 2) {
-            switch (parts[1]) {
-                case '-b':
-                    searchEngine = 'bing';
-                    break;
-                case '-b1':
-                    searchEngine = 'baidu';
-                    break;
-                // Add more cases for other search engines if needed
-                default:
-                    typeWriterEffect('无效的搜索引擎选项');
-                    return;
+                if (parts.length >= 2) {
+                    switch (parts[1]) {
+                        case '-b':
+                            searchEngine = 'bing';
+                            break;
+                        case '-b1':
+                            searchEngine = 'baidu';
+                            break;
+                            // Add more cases for other search engines if needed
+                        default:
+                            typeWriterEffect('无效的搜索引擎选项');
+                            return;
+                    }
+
+                    const keyword = parts.slice(2).join(' ');
+                    let searchUrl = '';
+
+                    switch (searchEngine) {
+                        case 'bing':
+                            searchUrl = 'https://www.bing.com/search?q=' + encodeURIComponent(keyword);
+                            break;
+                        case 'baidu':
+                            searchUrl = 'https://www.baidu.com/s?wd=' + encodeURIComponent(keyword);
+                            break;
+                            // Add cases for other search engines here
+                    }
+
+                    window.open(searchUrl, '_blank');
+                    typeWriterEffect(`正在使用${searchEngine === 'bing' ? '必应' : '百度'}搜索：${keyword}`);
+                } else {
+                    typeWriterEffect('请输入搜索引擎选项和关键词');
+                }
+
+            } else if (command.startsWith('start ')) {
+                const url = command.substring(6).trim();
+                openUrlInNewTab(url);
+                addOutput('[local] Jump');
+            } else {
+                typeWriterEffect("无效的命令。输入 'help' 查看可用命令列表。");
+                addOutput('[local] error');
             }
-
-            const keyword = parts.slice(2).join(' ');
-            let searchUrl = '';
-
-            switch (searchEngine) {
-                case 'bing':
-                    searchUrl = 'https://www.bing.com/search?q=' + encodeURIComponent(keyword);
-                    break;
-                case 'baidu':
-                    searchUrl = 'https://www.baidu.com/s?wd=' + encodeURIComponent(keyword);
-                    break;
-                // Add cases for other search engines here
-            }
-
-            window.open(searchUrl, '_blank');
-            typeWriterEffect(`正在使用${searchEngine === 'bing' ? '必应' : '百度'}搜索：${keyword}`);
-        } else {
-            typeWriterEffect('请输入搜索引擎选项和关键词');
         }
 
-    } else if (command.startsWith('start ')) {
-        const url = command.substring(6).trim();
-        openUrlInNewTab(url);
-        addOutput('[local] Jump');
-    } else {
-        typeWriterEffect("无效的命令。输入 'help' 查看可用命令列表。");
-        addOutput('[local] error');
-    }
-}
-
-// 页面加载时，检查本地存储中是否存在背景图片地址，并设置背景
-document.addEventListener('DOMContentLoaded', function() {
-    const backgroundURL = localStorage.getItem('backgroundURL');
-    if (backgroundURL) {
-        document.body.style.backgroundImage = `url('${backgroundURL}')`;
-    }
-});
+        // 页面加载时，检查本地存储中是否存在背景图片地址，并设置背景
+        document.addEventListener('DOMContentLoaded', function() {
+            const backgroundURL = localStorage.getItem('backgroundURL');
+            if (backgroundURL) {
+                document.body.style.backgroundImage = `url('${backgroundURL}')`;
+            }
+        });
 
 
         function addOutput(text) {
@@ -511,15 +509,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function addBookmark(url) {
             bookmarks.push(url);
-            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-            typeWriterEffect(`已添加书签: ${url}`);
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks)); // 保存书签到本地存储
+            typeWriterEffect('已添加网址到收藏夹：' + url);
         }
 
         function listBookmarks() {
-            typeWriterEffect('书签列表:');
-            bookmarks.forEach((bookmark, index) => {
-                typeWriterEffect(`${index + 1}. ${bookmark}`);
-            });
+            const storedBookmarks = localStorage.getItem('bookmarks');
+            if (storedBookmarks) {
+                bookmarks = JSON.parse(storedBookmarks);
+            } else {
+                bookmarks = [];
+            }
+
+            if (bookmarks.length === 0) {
+                typeWriterEffect('收藏夹为空');
+            } else {
+                typeWriterEffect('收藏夹中的网址：');
+                bookmarks.forEach((bookmark, index) => {
+                    typeWriterEffect((index + 1) + ': ' + bookmark);
+                });
+            }
         }
 
         function addTodoItem(text) {
@@ -656,7 +665,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'add': '{add} <url>',
             'rm': '{rm} <index>',
             'go': '{go} <index>',
-            'background':'{background} <url>'
+            'background': '{background} <url>'
             // 添加更多命令及其语法
         };
 
@@ -705,30 +714,30 @@ document.addEventListener('DOMContentLoaded', function() {
         let lastWheelEventTime = 0;
 
 
-document.addEventListener('wheel', function(event) {
-    const currentTime = Date.now();
-    if (document.activeElement !== document.getElementById('inputBox') && (currentTime - lastWheelEventTime) >= 15000) {
-        lastWheelEventTime = currentTime;
-        fetch('https://tenapi.cn/v2/bilihot')
-            .then(response => response.json())
-            .then(data => {
-                if (data.code === 200 && data.data.length > 0) {
-                    const randomIndex = Math.floor(Math.random() * data.data.length);
-                    const randomData = data.data[randomIndex];
-                    const outputLink = document.createElement('a');
-                    outputLink.href = randomData.url;
-                    outputLink.textContent = `[BiliHot] ${randomData.name}`;
-                    outputLink.target = '_blank';
-                    outputLink.style.color = 'black';
-                    outputLink.style.textDecoration = 'none';
-                    document.getElementById('output').innerHTML += outputLink.outerHTML + '<br>';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }
-});
+        document.addEventListener('wheel', function(event) {
+            const currentTime = Date.now();
+            if (document.activeElement !== document.getElementById('inputBox') && (currentTime - lastWheelEventTime) >= 15000) {
+                lastWheelEventTime = currentTime;
+                fetch('https://tenapi.cn/v2/bilihot')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.code === 200 && data.data.length > 0) {
+                            const randomIndex = Math.floor(Math.random() * data.data.length);
+                            const randomData = data.data[randomIndex];
+                            const outputLink = document.createElement('a');
+                            outputLink.href = randomData.url;
+                            outputLink.textContent = `[BiliHot] ${randomData.name}`;
+                            outputLink.target = '_blank';
+                            outputLink.style.color = 'black';
+                            outputLink.style.textDecoration = 'none';
+                            document.getElementById('output').innerHTML += outputLink.outerHTML + '<br>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+            }
+        });
     </script>
 </body>
 
