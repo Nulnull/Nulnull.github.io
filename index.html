@@ -13,8 +13,8 @@
             flex-direction: column;
             justify-content: flex-start; /* 将内容顶部对齐 */
             align-items: flex-start; /* 将内容左对齐 */
-            padding-left:23px;
-            padding:20px;
+            padding-left:40px;
+            padding-top: 18px;
             background-clip:content-box;
             
         }
@@ -30,6 +30,7 @@
     background-clip:content-box;
     gap: 10px; /* 间距，避免重叠 */
     background-color: #00000000;
+    padding-top: 30px;
 }
 
 
@@ -100,12 +101,12 @@
 
         #input.active {
             padding-left: 2px;
-            font-size: 65px;
+            font-size: 70px;
             border: none;
             outline: none;
             font-family: 'Lucida Console', monospace;
             transition: width 0.3s, font-size 0.3s;
-            caret-shape: bar;
+            caret-shape:bar;
 
 
         }
@@ -123,7 +124,7 @@
             overflow-y: auto;
             font-family: 'Lucida Console', monospace;
             padding-top: 0px;
-            margin-top: 5px;
+            margin-top: 14px;
 
         }
 
@@ -169,8 +170,9 @@
             /* 将容器设置为弹性容器 */
             border: 1px solid #000000;
             width: 166px;
-            margin-top: 75px;
+            margin-top: 86px;
             padding: 5px
+            
             
         }
 
@@ -178,7 +180,13 @@
             font-size: 65px;
 
         }
-
+        .text{
+            font-size: 26px;
+            background-color: #000000;
+            color:white;
+            border: #000000;
+            padding:5px;
+        }
         /* 输入框未选中时的样式 */
     </style>
 </head>
@@ -186,8 +194,12 @@
 <body>
     <div class="parallax">
         <div class="parallax-layer" style="left:0; top: 0;">
+                <p class="text">LTS v2.7s Nulnull.github.io Nulnull</p>
+
+        </div>
+        <div class="parallax-layer" style="left:0; top: 0;">
             <div id="output">
-                <p>LTS v2.7s Nulnull.github.io Nulnull</p>
+
             </div>
         </div>
         <div class="parallax-layer" style="left: 0; top: 0;">
@@ -222,7 +234,7 @@
         const inputBox = document.getElementById('input');
         const candidateList = document.getElementById('candidate-list');
         const todoList = document.getElementById('todo-list');
-        let typingSpeed = 20; // 默认打字速度
+        let typingSpeed = 22.5; // 默认打字速度
         let commandHistory = [];
         let historyIndex = -1;
         const commands = [
@@ -468,10 +480,10 @@
             } else if (command.startsWith('start ')) {
                 const url = command.substring(6).trim();
                 openUrlInNewTab(url);
-                addOutput('[local] Jump');
+                addOutput('[System] Jump');
             } else {
                 typeWriterEffect("无效的命令。输入 'help' 查看可用命令列表。");
-                addOutput('[local] error');
+                addOutput('[System] error');
             }
         }
 
@@ -510,25 +522,76 @@
         function clearOutput() {
             outputDiv.innerHTML = '';
         }
+        function typeWriterEffect(text) {
+    let index = 0;
+    const outputDiv = document.getElementById('outputDiv'); // Assuming you have an outputDiv in your HTML
+    const typingSpeed = 100; // Default typing speed (milliseconds)
+    const outputLine = document.createElement('div');
+    outputDiv.appendChild(outputLine);
+
+    function typeNextCharacter() {
+        if (index < text.length) {
+            const char = text.charAt(index);
+
+            // Random delay between 50ms to 200ms
+            const randomDelay = Math.floor(Math.random() * (200 - 50 + 1)) + 50;
+
+            setTimeout(function() {
+                outputLine.textContent += char;
+                outputDiv.scrollTop = outputDiv.scrollHeight; // Scroll to bottom
+                index++;
+                typeNextCharacter();
+            }, randomDelay);
+        }
+    }
+
+    typeNextCharacter();
+}
 
         function typeWriterEffect(text) {
-            let index = 0;
-            const speed = typingSpeed;
-            const outputLine = document.createElement('div');
-            outputDiv.appendChild(outputLine);
+    let index = 0;
+    const speed = typingSpeed;
+    const outputLine = document.createElement('div');
+    outputDiv.appendChild(outputLine);
 
-            function typeNextCharacter() {
-                if (index < text.length) {
-                    const char = text.charAt(index);
-                    outputLine.textContent += char;
-                    index++;
-                    setTimeout(typeNextCharacter, speed);
-                }
-            }
+    function typeNextCharacter() {
+        if (index < text.length) {
+            // Check if the current character is about to be displayed
+            const nextChar = text.charAt(index);
 
-            typeNextCharacter();
+            // Generate random characters for each character about to be displayed
+            const randomChars = getRandomCharacters();
+
+            // Display the random characters immediately
+            outputLine.textContent += randomChars;
+
+            // Display the next character after a short delay
+            setTimeout(function() {
+                outputLine.textContent = outputLine.textContent.slice(0, -randomChars.length);
+                outputLine.textContent += nextChar;
+            }, speed);
+
+            index++;
+            setTimeout(typeNextCharacter, speed);
+        } else {
+            // Finished typing text
             outputDiv.scrollTop = outputDiv.scrollHeight;
         }
+    }
+
+    function getRandomCharacters() {
+        const characters = "!@#$%^&*()_+-=[]{}|;:,.<>?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789我不玩元神";
+        let randomChars = '';
+        for (let i = 0; i < 5; i++) { // Display 5 random characters
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            randomChars += characters.charAt(randomIndex);
+        }
+        return randomChars;
+    }
+
+    typeNextCharacter();
+}
+
 
         function startMatrix() {
             clearOutput();
@@ -820,8 +883,8 @@
         const mouseY = event.clientY;
 
         parallaxLayers.forEach((layer, index) => {
-            const speed = (index + 1) * 0.005; // 每个层的移动速度不同
-            const translateX = (mouseX - window.innerWidth / 6) * speed;
+            const speed = (index + 2) * 0.005; // 每个层的移动速度不同
+            const translateX = (mouseX - window.innerWidth / 9.2) * speed;
             const translateY = (mouseY - window.innerHeight / 1) * speed;
 
             layer.style.transform = `translate(${translateX}px, ${translateY}px)`;
