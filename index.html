@@ -4,6 +4,64 @@
 <head>
     <title>Null 2.8.5s</title>
     <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* 将内容顶部对齐 */
+            align-items: flex-start; /* 将内容左对齐 */
+            padding-left:23px;
+            padding:20px;
+            background-clip:content-box;
+            
+        }
+
+        .parallax {
+    position: relative;
+    height: 100%;
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 将内容顶部对齐 */
+    align-items: flex-start; /* 将内容左对齐 */
+    background-clip:content-box;
+    gap: 10px; /* 间距，避免重叠 */
+    background-color: #00000000;
+}
+
+
+        .parallax-layer {
+            position: relative;
+            will-change: transform;
+        }
+
+        #output {
+            height: auto;
+            color: black;
+            font-family: 'Lucida Console', monospace;
+            font-size: 22px;
+            padding-left: 5px;
+        }
+
+            #input {
+            font-size: 35px;
+            border: none;
+
+            outline: none;
+            padding-left: 11px;
+            font-family: 'Lucida Console', monospace;
+            transition: width 0.3s, font-size 0.3s;
+
+
+
+        }
+
+
+        
+
         body:before {
             top: 0;
             left: 0;
@@ -24,16 +82,7 @@
 
         }
 
-        #output {
-            height: auto;
-            color: black;
-            font-family: 'Lucida Console', monospace;
-            margin-bottom: 10px;
-            font-size: 22px;
 
-
-
-        }
 
         #output.active {
             animation: blink 0.5s infinite alternate;
@@ -47,18 +96,7 @@
             display: inline-block;
         }
 
-        #input {
-            font-size: 35px;
-            border: none;
 
-            outline: none;
-            padding-left: 11px;
-            font-family: 'Lucida Console', monospace;
-            transition: width 0.3s, font-size 0.3s;
-
-
-
-        }
 
         #input.active {
             padding-left: 2px;
@@ -94,7 +132,7 @@
 
         #search-pointer {
             position: absolute;
-            left: 17px;
+            left: 2px;
             /* 距离搜索框右侧的距离 */
             transform: translateY(-10px);
             width: 0;
@@ -143,18 +181,35 @@
 </head>
 
 <body>
+    <div class="parallax">
+        <div class="parallax-layer" style="left:0; top: 0;">
+            <div id="output">
+                <p>LTS v2.7s Nulnull.github.io Nulnull</p>
+            </div>
+        </div>
+        <div class="parallax-layer" style="left: 0; top: 0;">
+            <div class="input">
+            <input id="input" type="text" autofocus />
+                <div id="search-pointer"></div>
 
-    <div id="output">
-        <p>LTS v2.7s Nulnull.github.io Nulnull</p>
+            </div>
+            <div class="parallax-layer" style="left: 0; top: 0;">
+                <div id="candidate-list" class="candidate-list"></div>
+                
+            </div>
+            <div class="parallax-layer" style="left: 0; top: 0;">
+                <div id="command-syntax" class="command-syntax">Command syntax will be displayed here</div>
+            </div>
+        </div>
+        <!-- 添加更多视差层根据需要 -->
     </div>
-    <div class="input">
-        <input id="input" type="text" autofocus />
-        <div id="search-pointer"></div>
-    </div>
+    
 
-    <div id="candidate-list" class="candidate-list"></div>
-    <div id="command-syntax" class="command-syntax">Command syntax will be displayed here</div>
-    <div id="suggestions"></div>
+
+
+
+
+
 
 
     <div id="todo-list"></div>
@@ -427,11 +482,27 @@
 
 
         function addOutput(text) {
-            const outputLine = document.createElement('div');
-            outputLine.textContent = text;
-            outputDiv.appendChild(outputLine);
-            outputDiv.scrollTop = outputDiv.scrollHeight;
-        }
+    const outputLine = document.createElement('div');
+    const systemPrefix = '[System]';
+
+    if (text.startsWith(systemPrefix)) {
+        const systemSpan = document.createElement('span');
+        systemSpan.textContent = systemPrefix;
+        systemSpan.style.backgroundColor = 'black';
+        systemSpan.style.color = 'white';
+
+        const messageSpan = document.createElement('span');
+        messageSpan.textContent = text.substring(systemPrefix.length);
+
+        outputLine.appendChild(systemSpan);
+        outputLine.appendChild(messageSpan);
+    } else {
+        outputLine.textContent = text;
+    }
+
+    outputDiv.appendChild(outputLine);
+    outputDiv.scrollTop = outputDiv.scrollHeight;
+}
 
         function clearOutput() {
             outputDiv.innerHTML = '';
@@ -738,6 +809,23 @@
                     });
             }
         });
+        document.addEventListener('DOMContentLoaded', function () {
+    const parallaxLayers = document.querySelectorAll('.parallax-layer');
+
+    document.addEventListener('mousemove', function (event) {
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+
+        parallaxLayers.forEach((layer, index) => {
+            const speed = (index + 1) * 0.005; // 每个层的移动速度不同
+            const translateX = (mouseX - window.innerWidth / 6) * speed;
+            const translateY = (mouseY - window.innerHeight / 1) * speed;
+
+            layer.style.transform = `translate(${translateX}px, ${translateY}px)`;
+        });
+    });
+});
+
     </script>
 </body>
 
