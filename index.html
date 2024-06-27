@@ -32,8 +32,8 @@
     background-clip:content-box;
     gap: 10px; /* 间距，避免重叠 */
     background-color: #00000000;
-    padding-top: 15px;
-    padding-left: 50px;
+    padding-top: 30px;
+    padding-left: 30px;
 }
 
 
@@ -46,8 +46,9 @@
             height: auto;
             color: black;
             font-family: 'Lucida Console', monospace;
-            font-size: 22px;
+            font-size: 24px;
             padding-left: 5px;
+            
         }
 
             #input {
@@ -133,23 +134,23 @@
         .candidate-list {
             position: absolute;
             color: black;
-            padding: 5x;
             box-sizing: border-box;
-            font-size: 22px;
+            
             border: 5px solid #000000;
             display: none;
-            max-height: 400px;
             width: 186px;
             overflow-y: auto;
             font-family: 'Lucida Console', monospace;
-            margin-top: -5px;
-
+           
+            font-family: 'Lucida Console', monospace;
         }
         
 
         .candidate-item {
             cursor: pointer;
-            padding: 4px;
+            
+            font-size: 22px;
+            padding:2.5px;
         }
 
         #search-pointer {
@@ -179,7 +180,8 @@
         }
 
         .command-syntax {
-            font-size: 18px;
+            font-size: 22px;
+            
             /* 设置文字颜色为绿色 */
             font-family: 'Lucida Console', monospace;
             /* 设置字体 */
@@ -187,7 +189,7 @@
             /* 设置上边距 */
             display: flex;
             /* 将容器设置为弹性容器 */
-            width: 166px;
+            width: 186px;
 
             border: 5px solid #000000;
 
@@ -222,6 +224,7 @@
     z-index: 1000;
 }
 .candidate-list-label{
+    
     font-family: 'Lucida Console', monospace;
     display: flex;
             align-items: center;
@@ -232,6 +235,7 @@
             margin-top: 40px;
             font-size: 26px;
             width: 176px;
+            max-height: 70px;
             
 
 }
@@ -441,7 +445,7 @@
         }
 
         function hideCandidateList() {
-            candidateList.style.display = 'none';
+           // candidateList.style.display = 'none';
         }
 
         function replaceCommand(command) {
@@ -959,7 +963,6 @@ function typeWriterEffect(text) {
             }
         });
 
-
         const inputBox1 = document.getElementById('input');
 
         inputBox1.addEventListener('focus', function() {
@@ -975,7 +978,6 @@ function typeWriterEffect(text) {
         });
 
         let lastWheelEventTime = 0;
-
 
         document.addEventListener('wheel', function(event) {
             const currentTime = Date.now();
@@ -1017,8 +1019,6 @@ function typeWriterEffect(text) {
         });
     });
 });
-
     </script>
 </body>
-
 </html>
