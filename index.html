@@ -145,6 +145,7 @@
             margin-top: -5px;
 
         }
+        
 
         .candidate-item {
             cursor: pointer;
@@ -244,8 +245,8 @@
             padding-top: 5px;
             font-size: 26px;
             width: 141px;
-            margin-top: 84px;
-            
+            gap:10px;
+            margin-top: 20px;
             width: 176px;
             
 
@@ -306,7 +307,7 @@
             <div class="parallax-layer" style="left: 0; top: 0;">
                 <label for="candidate-list" class="candidate-list-label">candidate-&</label>
                 
-                <div id="candidate-list" class="candidate-list">mwwwswwdqqqqqqqq</div>
+                <div id="candidate-list" class="command-syntax">candidate list</div>
             </div>
             <div class="parallax-layer" style="left: 0; top: 0;">
                 <label for="command-syntax" class="command-syntax-label">commasyntax</label>
@@ -868,7 +869,7 @@ function typeWriterEffect(text) {
         searchPointer.style.display = 'block';
 
         // 在不需要显示闪烁提示的时候调用
-        //searchPointer.style.display = 'none';
+        searchPointer.style.display = 'none';
 
 
         // 获取闪烁搜索框的元素
