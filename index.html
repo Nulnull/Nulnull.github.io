@@ -963,6 +963,7 @@ function typeWriterEffect(text) {
             }
         });
 
+
         const inputBox1 = document.getElementById('input');
 
         inputBox1.addEventListener('focus', function() {
@@ -978,6 +979,7 @@ function typeWriterEffect(text) {
         });
 
         let lastWheelEventTime = 0;
+
 
         document.addEventListener('wheel', function(event) {
             const currentTime = Date.now();
@@ -1019,6 +1021,27 @@ function typeWriterEffect(text) {
         });
     });
 });
+        // 标记当前页面为第一页
+        localStorage.setItem('currentPage', 'page1');
+
+        // 添加键盘事件监听器
+        window.addEventListener('keydown', (event) => {
+            // 检查是否按下 Ctrl+O
+            if (event.ctrlKey && event.key === 'o') {
+                event.preventDefault();  // 阻止默认的 Ctrl+O 行为
+
+                // 获取当前页面
+                const currentPage = localStorage.getItem('currentPage');
+
+                if (currentPage === 'page1') {
+                    // 跳转到第二页并更新标记
+                    localStorage.setItem('currentPage', 'page2');
+                    window.location.href = 'page2.html';
+                }
+            }
+        });
+
     </script>
 </body>
+
 </html>
