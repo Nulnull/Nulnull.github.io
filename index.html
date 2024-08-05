@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Null 2.8.5s</title>
+    <title>Null 2.9.5.5.5.5.5.5s</title>
     <style>
         body, html {
             margin: 0;
@@ -17,8 +17,8 @@
             padding-left:40px;
             padding-top: 18px;
             background-clip:content-box;
-
-            
+            user-select: none;
+            overflow: hidden;
         }
 
         .parallax {
@@ -33,7 +33,7 @@
     gap: 10px; /* 间距，避免重叠 */
     background-color: #00000000;
     padding-top: 30px;
-    padding-left: 30px;
+    padding-left: 70px;
 }
 
 
@@ -138,7 +138,7 @@
             
             border: 5px solid #000000;
             display: none;
-            width: 186px;
+            width: 195px;
             overflow-y: auto;
             font-family: 'Lucida Console', monospace;
            
@@ -189,7 +189,7 @@
             /* 设置上边距 */
             display: flex;
             /* 将容器设置为弹性容器 */
-            width: 186px;
+            width: 195px;
 
             border: 5px solid #000000;
 
@@ -282,13 +282,175 @@
             margin-top: 20px;
         }
         /* 输入框未选中时的样式 */
+
+    #calculator {
+        position: fixed;
+        color:#ffffff;
+        transition: left 0.3s ease, top 0.3s ease; 
+        padding: 5px;
+        
+    }
+
+    #calc-input {
+        border: none;
+            outline: none;
+            font-family: 'Lucida Console', monospace;
+        width: 190px;
+        padding: 5px;
+        border: 5px solid #000000;
+        font-size:22px;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(20px);
+        border-top: #000000 0.5px;
+    }
+
+    #calc-result {
+        color:#000000;
+        
+
+        padding-left:1px;
+        padding-bottom: 5px;
+        padding-top:5px;
+        font-size: 21px;
+        
+    }
+    .calc{
+        width: 200px;
+        height:150px;
+    }
+    #calculator.show {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+        #calculator.hide {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        .calc-name{
+            font-family: 'Lucida Console', monospace;
+    display: flex;
+            align-items: center;
+            background-color: #000000;
+            color: white;
+            padding:5px;
+            padding-top: 5px;
+
+            font-size: 26px;
+            
+        }
+        .sticky-note {
+        position: absolute;
+        width: 200px;
+        height: auto;
+        border: 1px solid #ffffff;
+
+        cursor: move;
+        border: 5px solid #000000;
+        z-index: 1000;
+        outline: none; /* 确保没有额外的边框 */
+    }
+
+    .sticky-note.finished {
+        background-color: rgb(255, 255, 255);
+        color: rgb(255, 255, 255);
+        transition: opacity 0.1s;
+        outline: none; /* 确保没有额外的边框 */
+    }
+
+    .sticky-note.finished.hidden {
+        opacity: 0;
+        pointer-events: none;
+        outline: none; /* 确保没有额外的边框 */
+    }
+
+
+    .note-title {
+
+    font-size: 26px;
+    background-color: #000000;
+    padding: 5px;
+    padding-top:1px;
+    color: #ffffff;
+    backdrop-filter: blur(20px);
+    outline: none; /* 确保没有额外的边框 */
+}
+
+.note-content {
+    font-size: 22px;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    outline: 1px; /* 确保没有额外的边框 */
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+}
+
+.draggable {
+    position: absolute;
+    border: 5px solid #000000;
+    background-color: rgba(255, 255, 255, 0);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    max-height: 300px;
+    bottom:50px;
+    right :50px;
+    max-width: 310px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none; /* firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    text-decoration: none;
+    backdrop-filter: blur(23px);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    font-size: 26px;
+    text-decoration: none;
+    color:#000000
+
+}
+a {
+       text-decoration: none;
+       color:#000000
+}
+th {
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 26px;
+    padding-right: 235px;
+    margin-top:1px;
+}
+
+td {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+    text-decoration: none;
+    font-size: 24px;
+    padding-right:5px;
+
+}
+
+</style>
+
+
     </style>
 </head>
 
 <body>
+    
     <div class="parallax">
+        
         <div class="parallax-layer" style="left:0; top: 0;">
-            <p class="text">LTS v2.7s Nulnull.github.io Nulnull</p>
+            <p class="text">LTS v2.9.5s Nulnull.github.io Nulnull</p>
+            
         </div>
         <div class="parallax-layer" style="left:0; top: 0;">
             
@@ -301,8 +463,6 @@
                     <input type="text" id="input">
                 </div>
                     
-            
-                
                 
             </div>
             <div class="parallax-layer" style="left: 0; top: 0;">
@@ -317,8 +477,24 @@
                 <label for="command-syntax" class="command-syntax-label">commasyntax</label>
                 <div id="command-syntax" class="command-syntax">Command syntax will be displayed here</div>
             </div>
+            
         </div>
+
+        <div class="parallax-layer" style="left: 0; top: 0;">
+
+            <div id="calculator" style="display:none; position: absolute; ">
+                <label for="calc" class="calc-name">calculator </label>
+                <input type="text" id="calc-input" placeholder="Expression...">
+                <div id="calc-result"></div>
+            </div>
+            <div id="sticky-note"></div>
+            <div id="table-container" class="draggable" style="display: none;"></div>
     </div>
+        
+    </div>
+
+
+        
     <div id="fullscreen-clock" style="display:none;"></div>
     <div id="todo-list"></div>
     <script>
@@ -471,8 +647,25 @@
         function processCommand(command) {
             const outputText = '[local] $ ' + command;
             addOutput(outputText);
-
-            if (command.startsWith('background ')) {
+            
+           if (command.startsWith('finish ')) {
+                const id = command.substring(7).trim();
+                const note = document.getElementById(`note-${id}`);
+                if (note) {
+                    note.classList.add('finished');
+                    setTimeout(() => {
+                        note.classList.add('hidden');
+                        setTimeout(() => {
+                            if (note.parentNode) {
+                                note.parentNode.removeChild(note);
+                            }
+                        }, 1000); // 等待1秒后移除
+                    }, 1000); // 变为红色后等待1秒
+                    addOutput('[System] Note Finished');
+                } else {
+                    addOutput('[System] error: Note not found');
+                }
+            }else if (command.startsWith('background ')) {
                 let url = 'https://api.paugram.com/wallpaper/';
                 const inputUrl = command.substring(11).trim();
                 if (inputUrl) {
@@ -947,7 +1140,7 @@ function typeWriterEffect(text) {
             const syntaxDiv = document.getElementById('command-syntax');
             syntaxDiv.textContent = syntax;
         }
-
+        
         // 在输入框获得焦点时显示命令语法提示
         inputBox.addEventListener('input', showCommandSyntax);
 
@@ -1040,6 +1233,419 @@ function typeWriterEffect(text) {
                 }
             }
         });
+        document.addEventListener('DOMContentLoaded', function() {
+    const calculator = document.getElementById('calculator');
+    const calcInput = document.getElementById('calc-input');
+    const calcResult = document.getElementById('calc-result');
+    const textElement = document.querySelector('.inputsss');
+    let isCalculatorVisible = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+
+    // Function to evaluate mathematical expressions
+    function evaluateExpression(expression) {
+        try {
+            return new Function('return ' + expression)();
+        } catch (e) {
+            return 'Invalid expression';
+        }
+    }
+
+    // Function to show the calculator at the click position
+    function showCalculatorAt(x, y) {
+        if (x > 1650 || y > 1050 || x < 60) {
+            x = 0;
+            y = 0;
+            calculator.style.display = 'none';
+        } else {
+            calculator.style.left = `${x-300}px`;
+            calculator.style.top = `${y-400}px`;
+            calculator.style.display = 'block';
+            calcInput.focus();
+        }
+    }
+
+    // Function to hide the calculator
+    function hideCalculator() {
+        calculator.style.display = 'none';
+    }
+
+    // Handle keydown event for the calculator input
+    calcInput.addEventListener('keydown', function(event) {
+        if (event.key === '=' || event.key === 'Tab') {
+            event.preventDefault(); // Prevent default action (like form submission)
+            const result = evaluateExpression(calcInput.value);
+            calcResult.textContent = 'Result: ' + result;
+        }
+    });
+
+    // Hide calculator when clicking on the text element
+    textElement.addEventListener('click', function(event) {
+        hideCalculator();
+        event.stopPropagation(); // Prevent event from bubbling up to document
+    });
+
+    // Track the last mouse position
+    document.addEventListener('mousemove', function(event) {
+        lastMouseX = event.pageX;
+        lastMouseY = event.pageY;
+    });
+
+    // Handle Ctrl key to toggle calculator at last mouse position
+    document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && event.key === ']') {
+            if (isCalculatorVisible) {
+                hideCalculator();
+            } else {
+                showCalculatorAt(lastMouseX, lastMouseY);
+            }
+            isCalculatorVisible = !isCalculatorVisible;
+        }
+    });
+
+    // Function to make the calculator draggable
+    function makeDraggable(element) {
+        let isDragging = false;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        element.addEventListener('mousedown', function(event) {
+            if (event.button === 0) { // Only respond to left mouse button
+                isDragging = true;
+                offsetX = event.clientX - element.getBoundingClientRect().left;
+                offsetY = event.clientY - element.getBoundingClientRect().top;
+
+                // Move calculator to follow the mouse
+                function onMouseMove(event) {
+                    if (isDragging) {
+                        element.style.left = `${event.pageX - offsetX -150}px`;
+                        element.style.top = `${event.pageY - offsetY-550}px`;
+                    }
+                }
+
+                // Add mousemove and mouseup listeners
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', function() {
+                    isDragging = false;
+                    document.removeEventListener('mousemove', onMouseMove);
+                }, { once: true });
+            }
+        });
+
+        element.ondragstart = function() {
+            return false;
+        };
+    }
+
+    // Initialize draggable functionality for the calculator
+    makeDraggable(calculator);
+});
+
+        let noteCount = 0; // Track the number of notes to position them properly
+        document.addEventListener('DOMContentLoaded', function() {
+    let isCalculatorVisible = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    let stickyNoteIndex = 1;
+
+    // Function to create a new sticky note
+    function createStickyNote(position = { left: '100px', top: '100px' }) {
+        const noteDiv = document.createElement('div');
+        noteDiv.classList.add('sticky-note');
+        noteDiv.id = `note-${stickyNoteIndex}`;
+
+        // Create and add editable title
+        const titleDiv = document.createElement('div');
+        titleDiv.classList.add('note-title');
+        titleDiv.classList.add('editable');
+        titleDiv.textContent = 'Click to edit title';
+        titleDiv.contentEditable = true;
+
+        // Create and add editable content
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('note-content');
+        contentDiv.classList.add('editable');
+        contentDiv.textContent = 'Click to edit content';
+        contentDiv.contentEditable = true;
+
+        noteDiv.appendChild(titleDiv);
+        noteDiv.appendChild(contentDiv);
+
+        // Position the note based on provided coordinates
+        noteDiv.style.left = position.left;
+        noteDiv.style.top = position.top;
+
+        document.body.appendChild(noteDiv);
+
+        // Make the note draggable
+        makeDraggable(noteDiv);
+
+        // Increment the index for the next note
+        stickyNoteIndex++;
+    }
+
+    // Function to make an element draggable
+    function makeDraggable(element) {
+        element.addEventListener('mousedown', (event) => {
+            if (event.button === 0) { // Only respond to left mouse button
+                let shiftX = event.clientX - element.getBoundingClientRect().left;
+                let shiftY = event.clientY - element.getBoundingClientRect().top;
+
+                function moveAt(pageX, pageY) {
+                    element.style.left = `${pageX - shiftX}px`;
+                    element.style.top = `${pageY - shiftY}px`;
+                }
+
+                moveAt(event.pageX, event.pageY);
+
+                function onMouseMove(event) {
+                    moveAt(event.pageX, event.pageY);
+                }
+
+                document.addEventListener('mousemove', onMouseMove);
+
+                element.onmouseup = function() {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    element.onmouseup = null;
+                };
+            }
+        });
+
+        element.ondragstart = function() {
+            return false;
+        };
+    }
+
+
+
+    // Handle Ctrl+P to create a new sticky note on the right side of the viewport
+    document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && event.key === '`') {
+            event.preventDefault(); // Prevent default action
+            const viewportWidth = window.innerWidth;
+            const noteWidth = 200; // Assume the width of the note
+            createStickyNote({
+                left: `${viewportWidth - noteWidth - 60}px`, // 20px margin from the right
+                top: '100px' // Adjust this as needed
+            });
+        }
+    });
+
+    // Existing code for handling commands
+    function processCommand(command) {
+        const outputText = '[local] $ ' + command;
+        addOutput(outputText);
+
+        if (command.startsWith('notebook ')) {
+            const parts = command.split(' ');
+            if (parts.length >= 4) {
+                const index = parts[1];
+                const title = parts[2];
+                const content = parts.slice(3).join(' ');
+
+                createStickyNoteWithDetails(index, title, content);
+                addOutput('[System] Notebook Added');
+            } else {
+                typeWriterEffect('Invalid notebook command format.');
+                addOutput('[System] error');
+            }
+        } else if (command.startsWith('finish ')) {
+            const index = parseInt(command.substring(7).trim());
+            finishStickyNote(index);
+            addOutput('[System] Finished');
+        }
+        // Existing command handling code...
+    }
+
+    // Function to create a sticky note with title and content from command
+    function createStickyNoteWithDetails(index, title, content) {
+        const noteDiv = document.createElement('div');
+        noteDiv.classList.add('sticky-note');
+        noteDiv.id = `note-${index}`;
+
+        const titleDiv = document.createElement('div');
+        titleDiv.classList.add('note-title');
+        titleDiv.textContent = title;
+
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('note-content');
+        contentDiv.textContent = content;
+
+        noteDiv.appendChild(titleDiv);
+        noteDiv.appendChild(contentDiv);
+
+        document.body.appendChild(noteDiv);
+
+        // Make the note draggable
+        makeDraggable(noteDiv);
+    }
+
+    // Function to finish a sticky note (hide it and change color)
+    function finishStickyNote(index) {
+        const note = document.getElementById(`note-${index}`);
+        if (note) {
+            note.style.backgroundColor = 'red'; // Change color to red
+            setTimeout(() => {
+                note.style.display = 'none'; // Hide note after 1 second
+            }, 100);
+        } else {
+            typeWriterEffect('Invalid notebook index.');
+            addOutput('[System] error');
+        }
+    }
+
+    // Function to evaluate mathematical expressions
+    function evaluateExpression(expression) {
+        try {
+            return new Function('return ' + expression)();
+        } catch (e) {
+            return 'Invalid expression';
+        }
+    }
+
+    // Handle keydown event for the calculator input
+    const calcInput = document.getElementById('calc-input');
+    const calcResult = document.getElementById('calc-result');
+    calcInput.addEventListener('keydown', function(event) {
+        if (event.key === '=' || event.key === 'Tab') {
+            event.preventDefault(); // Prevent default action (like form submission)
+            const result = evaluateExpression(calcInput.value);
+            calcResult.textContent = 'Result: ' + result;
+        }
+    });
+
+    // Function to show the calculator at the click position
+    function showCalculatorAt(x, y) {
+        if (x > 1650 || y > 1050 || x < 60) {
+            x = 0;
+            y = 0;
+            calculator.style.display = 'none';
+        } else {
+            calculator.style.left = `${x - 100}px`;
+            calculator.style.top = `${y - 600}px`;
+            calculator.style.display = 'block';
+            calcInput.focus();
+        }
+    }
+
+    // Function to hide the calculator
+    function hideCalculator() {
+        calculator.style.display = 'none';
+    }
+
+    // Hide calculator when clicking on the text element
+    const textElement = document.querySelector('.inputsss');
+    textElement.addEventListener('click', function(event) {
+        hideCalculator();
+        event.stopPropagation(); // Prevent event from bubbling up to document
+    });
+
+    // Track the last mouse position
+    document.addEventListener('mousemove', function(event) {
+        lastMouseX = event.pageX;
+        lastMouseY = event.pageY;
+    });
+
+    // Handle Ctrl key to toggle calculator at last mouse position
+    document.addEventListener('keydown', function(event) {
+        if (event.key === ']') {
+            if (isCalculatorVisible) {
+                hideCalculator();
+            } else {
+                showCalculatorAt(lastMouseX, lastMouseY);
+            }
+            isCalculatorVisible = !isCalculatorVisible;
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const draggableTable = document.createElement('div');
+    draggableTable.className = 'draggable';
+    draggableTable.style.display = 'none';
+    document.body.appendChild(draggableTable);
+
+    async function fetchDataAndDisplay() {
+        try {
+            const response = await fetch('https://tenapi.cn/v2/bilihot');
+            const data = await response.json();
+
+            if (data.code === 200) {
+                const table = document.createElement('table');
+                const thead = document.createElement('thead');
+                const tbody = document.createElement('tbody');
+
+                const headerRow = document.createElement('tr');
+                const nameHeader = document.createElement('th');
+                nameHeader.textContent = 'BiliHot';
+                headerRow.appendChild(nameHeader);
+                thead.appendChild(headerRow);
+
+                data.data.forEach(item => {
+                    const row = document.createElement('tr');
+                    const nameCell = document.createElement('td');
+                    const link = document.createElement('a');
+                    link.href = item.url;
+                    link.textContent = item.name;
+                    link.target = '_blank'; // Open link in a new tab
+                    nameCell.appendChild(link);
+                    row.appendChild(nameCell);
+                    tbody.appendChild(row);
+                });
+
+                table.appendChild(thead);
+                table.appendChild(tbody);
+                draggableTable.appendChild(table);
+            } else {
+                console.error('Failed to fetch data');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    fetchDataAndDisplay();
+
+    let isTableVisible = false;
+    let offsetX, offsetY;
+
+    function showTable() {
+        draggableTable.style.display = 'block';
+    }
+
+    function hideTable() {
+        draggableTable.style.display = 'none';
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && event.key === '[') {
+            if (isTableVisible) {
+                hideTable();
+            } else {
+                showTable();
+            }
+            isTableVisible = !isTableVisible;
+        }
+    });
+
+    draggableTable.addEventListener('mousedown', function(event) {
+        offsetX = event.clientX - draggableTable.offsetLeft;
+        offsetY = event.clientY - draggableTable.offsetTop;
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    });
+
+    function onMouseMove(event) {
+        draggableTable.style.left = `${event.clientX - offsetX}px`;
+        draggableTable.style.top = `${event.clientY - offsetY}px`;
+    }
+
+    function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+});
+
 
     </script>
 </body>
