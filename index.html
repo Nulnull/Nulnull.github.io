@@ -32,8 +32,9 @@
     background-clip:content-box;
     gap: 10px; /* 间距，避免重叠 */
     background-color: #00000000;
-    padding-top: 30px;
-    padding-left: 70px;
+    padding-top: 2em;
+    padding-left: 2em;
+    
 }
 
 
@@ -48,7 +49,8 @@
             font-family: 'Lucida Console', monospace;
             font-size: 24px;
             padding-left: 5px;
-            
+            padding-top:5px;
+            padding-bottom: 5px;
         }
 
             #input {
@@ -534,7 +536,7 @@ td {
             'todo ',
             'background ',
             'done ', // 计算器命令
-           
+            'finish'
 
         ];
         let bookmarks = [];
@@ -737,7 +739,8 @@ td {
                 const index = parseInt(command.substring(3));
                 goToBookmark(index);
                 addOutput('[System] Jump');
-
+            } else if (command === '作者') {
+                typeWriterEffect('高某');
             } else if (command.startsWith('search ')) {
                 const parts = command.split(' ');
                 let searchEngine = '';
@@ -1125,7 +1128,9 @@ function typeWriterEffect(text) {
             'add': '{add} <url>',
             'rm': '{rm} <index>',
             'go': '{go} <index>',
-            'background': '{background} <url>'
+            'background': '{background} <url>',
+            'finish':'{finish} <item>'
+
             // 添加更多命令及其语法
         };
 
@@ -1233,7 +1238,7 @@ function typeWriterEffect(text) {
                 }
             }
         });
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {       
     const calculator = document.getElementById('calculator');
     const calcInput = document.getElementById('calc-input');
     const calcResult = document.getElementById('calc-result');
@@ -1484,7 +1489,7 @@ function typeWriterEffect(text) {
     function finishStickyNote(index) {
         const note = document.getElementById(`note-${index}`);
         if (note) {
-            note.style.backgroundColor = 'red'; // Change color to red
+            note.style.backgroundColor = 'black'; // Change color to red
             setTimeout(() => {
                 note.style.display = 'none'; // Hide note after 1 second
             }, 100);
