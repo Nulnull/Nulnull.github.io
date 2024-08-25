@@ -5,6 +5,7 @@
     <title>Null 2.9.5.5.5.5.5.5s</title>
     <style>
         body, html {
+            background-color: #ffffff;
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -19,6 +20,7 @@
             background-clip:content-box;
             user-select: none;
             overflow: hidden;
+            zoom: 100%;
         }
 
         .parallax {
@@ -32,8 +34,8 @@
     background-clip:content-box;
     gap: 10px; /* 间距，避免重叠 */
     background-color: #00000000;
-    padding-top: 2em;
-    padding-left: 2em;
+    padding-top: 1em;
+    padding-left: 0.5em;
     
 }
 
@@ -439,6 +441,197 @@ td {
     padding-right:5px;
 
 }
+.content {
+            padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+/* 定义渐入动画 */
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+
+    }
+    to {
+        opacity: 1;
+    }
+    
+}
+
+.fadeIn{
+    height:100%;
+    width:100%;
+}
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.053);
+            backdrop-filter: blur(20px); /* 全屏模糊 */
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            animation: fadeIn 0.08s ease forwards; /* 应用渐入动画 */
+        }
+        .overlay.hide{
+            animation: fadeOut 0.3s ease forwards; /* 应用渐入动画 */
+        }
+        .search-container {
+
+            outline: none;
+            margin-top: 100px;
+            font-size: 26px;
+            border: none;
+            outline: none;
+            font-family: 'Lucida Console', monospace;
+            transition: width 0.3s, font-size 0.3s;
+            caret-shape:bar;
+            z-index: 1001; /* 保证搜索框在模糊层上方 */
+            color:#000000;
+            padding:5px;
+            width: 690px;
+            display: flex;
+            margin-left: 0px;
+            margin-left: 0px;
+            margin-right: 0px;
+            margin-top: 0px;
+
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding-bottom: 250px;
+        }
+
+        #searchInput {
+            outline: none;
+            width: 300px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 5px solid #000000;
+            font-size: 26px;
+            
+        }
+
+        .search-engines {
+            margin-top: -3.8px;
+            justify-content: center;
+
+            
+        }
+
+        .search-engines button {
+            margin: 0 6px;
+            border: none;
+            padding-top: 0px;
+            cursor: pointer;
+            outline: none;
+            width: 100px;
+            font-size: 21px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            height: 29px;
+        }
+
+        .search-engines .active {
+            background-color: black;
+            color: white;
+        }
+
+        .search-engines .inactive {
+            background-color: white;
+            color: black;
+            border: #000000 solid 3px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .searchbotton{
+            background-color: #000000;
+            color:#ffffff;
+            outline: none;
+            width: 900px;
+            margin-bottom: 10px;
+            font-size: 26px;
+            border: 5px solid #000000;
+        }
+        .searchbotton-Go{
+            height:60.5px;
+            width: 280px;
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: none;
+            border: #000000 solid 3px;
+            font-size: 26px;
+            
+        }
+        .searchbotton-Go:hover{
+            height:60.5px;
+            width: 280px;
+            background-color: #000000;
+            color: #ffffff;
+            border-radius: none;
+            border: #000000 solid 3px;
+            font-size: 26px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            
+        }
+
+
+        .history-container {
+    display: flex;
+    flex-wrap: wrap; /* 允许换行 */
+    width: 680px; /* 每行固定宽度 */
+    padding-bottom:10px;
+    margin-left:-700px;
+    z-index: 1001;
+}
+
+.history-item {
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+    color:#000000;
+    border: #000000 solid 3px;
+    cursor: pointer;
+    font-size: 16px;
+    white-space: nowrap; /* 防止内容换行 */
+    display: inline-block; /* 使元素宽度自适应内容 */
+    box-sizing: border-box;
+    word-break: keep-all; /* 避免单词被拆分 */
+    max-width: calc(100% - 12px); /* 防止超出容器宽度 */
+}
+
+.history-item:hover {
+    background-color: #000000;
+    color:#ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.iframe-container {
+    border: 10px solid #000; /* Ensure iframe has a border */
+    position: absolute; /* Enable absolute positioning */
+    z-index: 1002;
+}
 
 </style>
 
@@ -451,7 +644,7 @@ td {
     <div class="parallax">
         
         <div class="parallax-layer" style="left:0; top: 0;">
-            <p class="text">LTS v2.9.5s Nulnull.github.io Nulnull</p>
+            <p class="text">LTS v2.9s Nulnull.github.io Nulnull</p>
             
         </div>
         <div class="parallax-layer" style="left:0; top: 0;">
@@ -478,6 +671,7 @@ td {
             <div class="parallax-layer" style="left: 0; top: 0;">
                 <label for="command-syntax" class="command-syntax-label">commasyntax</label>
                 <div id="command-syntax" class="command-syntax">Command syntax will be displayed here</div>
+
             </div>
             
         </div>
@@ -495,8 +689,21 @@ td {
         
     </div>
 
+    <div id="overlay" class="overlay">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search...">
+            <button class="searchbotton">[Web]  $ Search</button>
+            <div class="search-engines">
+                <button id="bingButton" class="active" onclick="setEngine('bing')">Bing</button>
+                <button id="baiduButton" class="inactive" onclick="setEngine('baidu')">Baidu</button>
+            </div>
+            
+            <button onclick="search()" class="searchbotton-Go">Go</button>
 
-        
+        </div>
+        <div class="history-container" id="historyContainer"></div> <!-- 搜索历史容器 -->
+    </div>
+  
     <div id="fullscreen-clock" style="display:none;"></div>
     <div id="todo-list"></div>
     <script>
@@ -704,7 +911,7 @@ td {
             } else if (command === 'help') {
                 showHelp();
             } else if (command === 'calc') {
-                typeWriterEffect('计算器功能尚未实现');
+                typeWriterEffect('ctrl+]');
                 addOutput('[System] error');
             } else if (command.startsWith('bookmark ')) {
                 const url = command.substring(9).trim();
@@ -1425,7 +1632,7 @@ function typeWriterEffect(text) {
 
     // Handle Ctrl+P to create a new sticky note on the right side of the viewport
     document.addEventListener('keydown', function(event) {
-        if (event.ctrlKey && event.key === '`') {
+        if (event.ctrlKey && event.key === '.') {
             event.preventDefault(); // Prevent default action
             const viewportWidth = window.innerWidth;
             const noteWidth = 200; // Assume the width of the note
@@ -1553,7 +1760,7 @@ function typeWriterEffect(text) {
 
     // Handle Ctrl key to toggle calculator at last mouse position
     document.addEventListener('keydown', function(event) {
-        if (event.key === ']') {
+        if (event.ctrlKey && event.key === ']') {
             if (isCalculatorVisible) {
                 hideCalculator();
             } else {
@@ -1650,6 +1857,323 @@ document.addEventListener('DOMContentLoaded', function() {
         document.removeEventListener('mouseup', onMouseUp);
     }
 });
+
+
+
+
+let currentEngine = 'bing';
+let expandedCard = null; // 当前展开的卡片
+let useCardMode = false; // 是否启用卡片模式
+let cardGroups = []; // 存放卡片分组信息
+
+document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === ',') {
+        toggleOverlay();
+    } else if (event.ctrlKey && event.key === '/') {
+        toggleCardMode(); // 切换卡片模式
+    } else if (event.key === 'Enter') {
+        performSearch(); // 执行搜索
+    }
+});
+
+document.getElementById('searchInput').addEventListener('focus', function() {
+    disableInteractions();
+});
+
+document.getElementById('searchInput').addEventListener('blur', function() {
+    enableInteractions();
+});
+
+function toggleOverlay() {
+    const overlay = document.getElementById('overlay');
+    if (overlay.classList.contains('show')) {
+        overlay.classList.remove('show');
+    } else {
+        overlay.classList.add('show');
+        document.getElementById('searchInput').focus();
+        displaySearchHistory(); // 显示历史记录
+    }
+}
+
+function toggleCardMode() {
+    useCardMode = !useCardMode; // 切换卡片模式
+    const searchInput = document.getElementById('searchInput');
+    if (useCardMode) {
+        searchInput.placeholder = 'Card Display';
+    } else {
+        searchInput.placeholder = '';
+    }
+}
+
+function performSearch() {
+    const query = document.getElementById('searchInput').value;
+    if (query) {
+        const baseUrl = currentEngine === 'bing' ? 'https://www.bing.com/search?q=' : 'https://www.baidu.com/s?wd=';
+        const searchUrl = baseUrl + encodeURIComponent(query);
+
+        if (useCardMode) {
+            createAndExpandSearchCard(searchUrl, query); // 卡片模式直接展开显示
+        } else {
+            window.open(searchUrl, '_blank'); // 正常模式下在新标签页打开
+        }
+
+        updateSearchHistory(query); // 更新并显示历史记录
+    }
+}
+
+function createAndExpandSearchCard(url, query) {
+    // 创建卡片
+    const card = document.createElement('div');
+    card.className = 'search-card';
+    card.style.position = 'fixed';
+    card.style.left = '10px';
+    card.style.width = '250px'; // 初始宽度
+    card.style.height = '100px'; // 初始高度
+    card.style.backgroundColor = '#fff';
+    card.style.border = '2px solid black';
+    card.style.marginBottom = '10px';
+    card.style.zIndex = '1002';
+    card.style.transition = 'all 0.3s ease';
+
+    // 设置卡片位置
+    const existingCards = document.getElementsByClassName('search-card');
+    const topOffset = 20 + (existingCards.length * 110);
+    card.style.top = `${topOffset}px`;
+
+    // 卡片内容：显示搜索内容
+    const cardContent = document.createElement('div');
+    cardContent.textContent = `Search: ${query}`;
+    cardContent.style.padding = '10px';
+    cardContent.style.cursor = 'pointer';
+    cardContent.style.whiteSpace = 'nowrap';
+    cardContent.style.overflow = 'hidden';
+    cardContent.style.textOverflow = 'ellipsis';
+
+    card.appendChild(cardContent);
+    document.body.appendChild(card);
+
+    // 添加点击事件，允许卡片展开或折叠
+    cardContent.addEventListener('click', function() {
+        if (card.classList.contains('expanded')) {
+            closeCard(card, query); // 如果已展开则折叠
+        } else {
+            expandCard(card, url); // 如果折叠则展开
+        }
+    });
+
+    // 添加拖拽功能
+    makeCardDraggable(card);
+
+    // 初次搜索时直接展开卡片
+    expandCard(card, url);
+}
+
+function expandCard(card, url) {
+    expandedCard = card;
+    card.style.width = '80%';
+    card.style.height = '80%';
+    card.style.left = '10%';
+    card.style.top = '10%';
+    card.style.zIndex = '1003';
+    card.classList.add('expanded');
+
+    // 添加 iframe 显示搜索结果
+    const iframe = document.createElement('iframe');
+    iframe.src = url;
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+
+    card.innerHTML = ''; // 清空卡片内容
+    card.appendChild(iframe);
+
+    // 点击空白处折叠卡片
+    document.addEventListener('click', function(event) {
+        if (!card.contains(event.target) && card.classList.contains('expanded')) {
+            closeCard(card, card.querySelector('div').textContent.split(': ')[1]);
+        }
+    }, { once: true });
+}
+
+function closeCard(card, query) {
+    const existingCards = document.getElementsByClassName('search-card');
+    const topOffset = 20 + ((existingCards.length - 1) * 110);
+
+    card.style.width = '250px'; // 折叠后宽度
+    card.style.height = '100px'; // 折叠后高度
+    card.style.left = '10px';
+    card.style.top = `${topOffset}px`;
+    card.style.zIndex = '1002';
+    card.classList.remove('expanded');
+
+    card.innerHTML = ''; // 清空 iframe 内容
+    const cardContent = document.createElement('div');
+    cardContent.textContent = `Search: ${query}`;
+    cardContent.style.padding = '10px';
+    cardContent.style.cursor = 'pointer';
+    cardContent.style.whiteSpace = 'nowrap';
+    cardContent.style.overflow = 'hidden';
+    cardContent.style.textOverflow = 'ellipsis';
+    card.appendChild(cardContent);
+
+    expandedCard = null; // 重置展开卡片的引用
+}
+
+function makeCardDraggable(card) {
+    let offsetX, offsetY;
+
+    card.addEventListener('mousedown', function(e) {
+        offsetX = e.clientX - card.getBoundingClientRect().left;
+        offsetY = e.clientY - card.getBoundingClientRect().top;
+        card.style.zIndex = '1004'; // 拖拽时置于顶层
+        document.addEventListener('mousemove', moveCard);
+        document.addEventListener('mouseup', function() {
+            document.removeEventListener('mousemove', moveCard);
+            card.style.zIndex = '1002'; // 拖拽结束时恢复层级
+            // 处理卡片分组逻辑
+            checkForGrouping(card);
+        }, { once: true });
+    });
+
+    function moveCard(e) {
+        card.style.left = `${e.clientX - offsetX}px`;
+        card.style.top = `${e.clientY - offsetY}px`;
+    }
+}
+
+function checkForGrouping(card) {
+    const otherCards = Array.from(document.getElementsByClassName('search-card')).filter(c => c !== card);
+    for (let otherCard of otherCards) {
+        const cardRect = card.getBoundingClientRect();
+        const otherRect = otherCard.getBoundingClientRect();
+        const overlap = !(cardRect.right < otherRect.left || 
+                          cardRect.left > otherRect.right || 
+                          cardRect.bottom < otherRect.top || 
+                          cardRect.top > otherRect.bottom);
+
+        if (overlap) {
+            groupCards(card, otherCard);
+            break;
+        }
+    }
+}
+
+function groupCards(card1, card2) {
+    const group = document.createElement('div');
+    group.className = 'card-group';
+    group.style.position = 'fixed';
+    group.style.left = `${Math.min(card1.getBoundingClientRect().left, card2.getBoundingClientRect().left)}px`;
+    group.style.top = `${Math.min(card1.getBoundingClientRect().top, card2.getBoundingClientRect().top)}px`;
+    group.style.width = `${Math.max(card1.getBoundingClientRect().right, card2.getBoundingClientRect().right) - Math.min(card1.getBoundingClientRect().left, card2.getBoundingClientRect().left)}px`;
+    group.style.height = `${Math.max(card1.getBoundingClientRect().bottom, card2.getBoundingClientRect().bottom) - Math.min(card1.getBoundingClientRect().top, card2.getBoundingClientRect().top)}px`;
+    group.style.border = '1px solid blue';
+
+    document.body.appendChild(group);
+
+    card1.style.position = 'absolute';
+    card2.style.position = 'absolute';
+
+    group.appendChild(card1);
+    group.appendChild(card2);
+
+    // 添加点击事件展开所有卡片
+    group.addEventListener('click', function() {
+        for (let card of group.children) {
+            expandCard(card, card.querySelector('iframe') ? card.querySelector('iframe').src : card.querySelector('div').textContent.split(': ')[1]);
+        }
+    });
+
+    // 添加到全局分组列表
+    cardGroups.push(group);
+}
+
+function setEngine(engine) {
+    currentEngine = engine;
+    document.getElementById('bingButton').classList.toggle('active', engine === 'bing');
+    document.getElementById('bingButton').classList.toggle('inactive', engine !== 'bing');
+    document.getElementById('baiduButton').classList.toggle('active', engine === 'baidu');
+    document.getElementById('baiduButton').classList.toggle('inactive', engine !== 'baidu');
+}
+
+function toggleEngineFocus() {
+    const bingButton = document.getElementById('bingButton');
+    const baiduButton = document.getElementById('baiduButton');
+    if (document.activeElement === bingButton) {
+        baiduButton.focus();
+    } else {
+        bingButton.focus();
+    }
+}
+
+function disableInteractions() {
+    document.body.style.pointerEvents = 'none';
+    document.getElementById('overlay').style.pointerEvents = 'auto';
+}
+
+function enableInteractions() {
+    document.body.style.pointerEvents = 'auto';
+}
+
+// 更新并显示历史搜索内容
+function updateSearchHistory(query) {
+    let history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+    // 检查是否已存在，若不存在则添加
+    if (!history.includes(query)) {
+        history.unshift(query); // 添加到历史的开头
+        if (history.length > 10) history.pop(); // 保留最多10条记录
+        localStorage.setItem('searchHistory', JSON.stringify(history));
+    }
+
+    displaySearchHistory();
+}
+
+// 显示历史搜索内容
+function displaySearchHistory() {
+    let history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    const historyContainer = document.getElementById('historyContainer');
+    historyContainer.innerHTML = ''; // 清空历史记录显示
+
+    let currentLineWidth = 0;
+    let currentRow = document.createElement('div'); // 创建新的行容器
+    currentRow.style.display = 'flex';
+    currentRow.style.flexWrap = 'wrap';
+    currentRow.style.width = '680px'; // 每行固定宽度
+    historyContainer.appendChild(currentRow);
+
+    history.forEach(function(query, index) {
+        let item = document.createElement('div');
+        item.className = 'history-item';
+        item.textContent = query;
+
+        // 添加双击事件监听器
+        item.addEventListener('dblclick', function() {
+            history.splice(index, 1); // 从数组中移除该项
+            localStorage.setItem('searchHistory', JSON.stringify(history)); // 更新本地存储
+            displaySearchHistory(); // 重新显示更新后的历史记录
+        });
+
+        // 临时插入文档计算宽度
+        historyContainer.appendChild(item);
+        let itemWidth = item.offsetWidth + 10; // 包括边距
+        historyContainer.removeChild(item);
+
+        // 如果当前行的宽度加上新的卡片宽度超过 720px，则换行
+        if (currentLineWidth + itemWidth > 720) {
+            currentRow = document.createElement('div');
+            currentRow.style.display = 'flex';
+            currentRow.style.flexWrap = 'wrap';
+            currentRow.style.width = '680px';
+            historyContainer.appendChild(currentRow);
+            currentLineWidth = 0;
+        }
+
+        currentRow.appendChild(item);
+        currentLineWidth += itemWidth;
+    });
+}
+
+
 
 
     </script>
